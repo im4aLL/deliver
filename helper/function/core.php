@@ -50,4 +50,8 @@ function decode($sValue, $sSecretKey = 'hadi') {
 function cln_url_string($string){
 	return preg_replace("/[^a-zA-Z0-9_-]+/", "", $string);	
 }
+
+function cln_email_string($email){
+	return preg_replace("/[^a-z0-9+_.@-]/i", "", $email);	
+}
 ?>

@@ -13,7 +13,8 @@
 */
 defined("deliver") or die("Restriced Access");
 
-if($route['view']=='new') include($comDir.'new.php');
+if( $_SERVER['REQUEST_METHOD'] == 'POST' ) include($comDir.'_model.php');
+elseif($route['view']=='new') include($comDir.'new.php');
 elseif($route['view']=='signin') include($comDir.'login.php');
 elseif($route['view']=='logout') include($comDir.'logout.php');
 elseif($route['view']=='forget') include($comDir.'forget.php');

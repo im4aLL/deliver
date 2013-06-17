@@ -48,12 +48,13 @@ h1,h2,h3,h4,h5 { font-family: 'Bebas'; }
 	-moz-box-shadow: 1px 1px 5px 0px rgba(214,214,214,1);
 	box-shadow: 1px 1px 5px 0px rgba(214,214,214,1);
 }
+.small { font-size:11px }
+.dimmed { color:#CDCDCD }
+form label.error { color:#b94a48; font-size:11px }
 
 /* #LOGIN
 ==========================================*/
-.container.login { max-width:500px; margin:0 auto; margin-top:5%; background-color:#FFF; }
-.small { font-size:11px }
-.dimmed { color:#CDCDCD }
+.container.login { max-width:500px; margin:0 auto; margin-top:5%; margin-bottom:5%; background-color:#FFF; }
 
 /* #ERROR
 ==========================================*/
@@ -62,7 +63,7 @@ h1,h2,h3,h4,h5 { font-family: 'Bebas'; }
 
 /* #CREATE NEW
 ==========================================*/
-.container.create { max-width:500px; margin:0 auto; margin-top:5%; background-color:#fff }
+.container.create { max-width:500px; margin:0 auto; margin-top:5%; margin-bottom:5%; background-color:#fff }
 
 /* #Media Queries
 ================================================== */

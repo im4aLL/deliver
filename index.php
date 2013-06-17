@@ -18,6 +18,9 @@ include('config.php');
 include('helper/index.php');
 include('global.settings.php');
 include('route.php');
+
+$db = new db();
+$db->connect($config);
 ?>
 <!doctype html>
 <html>
@@ -29,6 +32,10 @@ include('route.php');
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/bootstrap/css/bootstrap-responsive.min.css">
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>css-js/style.css">
+
+<script src="<?php echo $global->baseurl ?>lib/jquery/jquery-1.10.1.min.js"></script>
+<script src="<?php echo $global->baseurl ?>lib/validate/jquery.validate.min.js"></script>
+<script src="<?php echo $global->baseurl ?>css-js/main.js"></script>
 </head>
 
 <body>
@@ -46,7 +53,8 @@ include('route.php');
 			else include($global->comFolder.'/authentication/login.php');
 		}
 	?>
-	<script src="<?php echo $global->baseurl ?>lib/jquery/jquery-1.10.1.min.js"></script>
-    <script src="<?php echo $global->baseurl ?>css-js/main.js"></script>
 </body>
 </html>
+<?php
+$db->disconnect();
+?>

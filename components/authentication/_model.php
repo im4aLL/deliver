@@ -1,8 +1,8 @@
 <?php
 /*
 * Deliver wiki
-* config.php
-* 13.06.2013
+* components/authentication/_model.php
+* 14.06.2013
 *
 * ===========================================
 * @package		1.0
@@ -12,12 +12,12 @@
 * ===========================================
 */
 
-$config = array();
+$array = array();
+$array = $_POST;
 
-$config['db_name'] = 'deliver';
-$config['db_host'] = 'localhost';
-$config['db_user'] = 'root';
-$config['db_pass'] = '';
-
-$config['tbl_prefix'] = 'd_';
+if( isset($array['register']) ){
+	echo '<pre>';
+	print_r($_POST);
+	echo '</pre>';
+}
 ?>
