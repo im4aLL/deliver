@@ -40,17 +40,30 @@ $db->connect($config);
 
 <body>
 	<?php
+		// user info
+		if( $_SESSION['logged_user'] > 0 ){
+			$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'users', 'method' => PDO::FETCH_OBJ, 'condition' => ' WHERE id = "'.$_SESSION['logged_user'].'"');
+			$db->select($qryArray);
+			$p_userData = $db->result();
+			$userData = $p_userData[0];
+		}
+		// user info
+				
 		if( $pageURL != NULL ){
 			if( file_exists($comDirIndex) ){
-				if($route['component']=='authentication' && !$_SESSION['logged']) include($comDirIndex);
-				elseif($_SESSION['logged']) include($comDirIndex);
+				if($route['component']=='authentication') include($comDirIndex);
+				elseif($_SESSION['logged'] && $userData->state == 1) include($comDirIndex);
+				elseif($_SESSION['logged'] && $userData->state == 2) include($global->comFolder.'/redirect/pending.php');
 				else include($global->comFolder.'/error/404.php');
 			}
 			else include($global->comFolder.'/error/404.php');	
 		}
 		else {
-			if($_SESSION['logged'])	echo 'welcome!';
-			else include($global->comFolder.'/authentication/login.php');
+			if($_SESSION['logged'])	{				
+				if( $userData->state == 2 ) include($global->comFolder.'/redirect/pending.php');
+				elseif( $userData->state == 1 ) echo redirect($global->baseurl.'home/',0,true);
+			}
+			else echo redirect($global->baseurl.'authentication/signin/',0,true);
 		}
 	?>
 </body>

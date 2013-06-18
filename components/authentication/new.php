@@ -79,7 +79,7 @@ defined("deliver") or die("Restriced Access");
     </form>
     
     <div class="clearfix">
-    	<div class="pull-left"><a href="<?php echo $global->baseurl ?>authentication/signin/">Already have an account? Sign in</a></div>
+    	<div class="pull-left"><a href="<?php echo $comURL ?>signin/">Already have an account? Sign in</a></div>
     </div>
     
     <hr>
@@ -143,7 +143,7 @@ defined("deliver") or die("Restriced Access");
 					equalTo: "Doesn't match with above password"
 				},
 				emp_id: {
-					required: "Please enter you employee ID",
+					required: "Please enter your employee ID",
 					number: "Must be number ex-250"
 				},
 				cell_no: {

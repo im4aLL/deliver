@@ -52,14 +52,33 @@ h1,h2,h3,h4,h5 { font-family: 'Bebas'; }
 .dimmed { color:#CDCDCD }
 form label.error { color:#b94a48; font-size:11px }
 
+::-moz-selection {
+    background-color: #dd2020;
+    color: #fff;
+	text-shadow:none;
+}
+
+::selection {
+    background-color: #dd2020;
+    color: #fff;
+	text-shadow:none;
+}
+
 /* #LOGIN
 ==========================================*/
 .container.login { max-width:500px; margin:0 auto; margin-top:5%; margin-bottom:5%; background-color:#FFF; }
 
-/* #ERROR
+/* #ERROR #SUCCESS
 ==========================================*/
-.container.error { text-align:center; margin-top:10%; text-shadow:0px 1px 0px #FFF }
-.container.error i { font-size:72px; color:#9d261d }
+.container.error, .container.success, .container.error, .container.info { text-align:center; margin-top:10%; text-shadow:0px 1px 0px #FFF }
+.container.error i, .container.success i, .container.info i { font-size:72px; }
+.container.error i, .container.error h1 { color:#9d261d }
+.container.success i, .container.success h1 { color:#468847 }
+.container.info i, .container.info h1 { color:#c09853 }
+.container.error h3, .container.success h3 { color:#666666; line-height:25px }
+.container.error .info-msg, .container.success .info-msg { margin:30px 0px }
+.redirect-msg { margin-top:50px; }
+ul.msg-list { list-style:none; }
 
 /* #CREATE NEW
 ==========================================*/
