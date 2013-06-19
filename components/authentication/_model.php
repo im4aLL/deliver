@@ -51,6 +51,7 @@ if( isset($array['register']) ){
 		$array['password'] = encode($array['password']);
 		$array['created_at'] = date("Y-m-d");
 		$array['temp_code'] = md5(time());
+		$array['designation'] = 'unknown';
 		
 		$inserted = $db->insert($_this->tableName, $array, array('email'));
 		
@@ -157,4 +158,70 @@ elseif( isset($_POST['signin']) ){
 	// if there is no error
 }
 // login
+
+// forget
+elseif( isset($_POST['forget']) ){
+	unset($array['forget']);
+	$array = sanitize($array, array('email'=>'email'));
+	
+	// checking for error
+	$errorList = array();
+	
+	if($array['email']=='flagged') $errorList[] = 'Please enter a valid email address';
+	else {
+		$qryArray = array( 'tbl_name' => $_this->tableName, 'field' => array('id'), 'method' => PDO::FETCH_OBJ, 'condition' => " WHERE email = '".$array['email']."'" );
+		$db->select($qryArray);
+		
+		if($db->total() != 1){
+			$errorList[] = 'This email address doesn\'t exists in our database.';
+		}
+	}
+	// checking for error
+	
+	// if error found
+	if( count($errorList) > 0 ){
+		$_SESSION['msg']['main'] = 'Following error(s) has been occurred - ';
+		$_SESSION['msg']['more'] = genList($errorList);
+		$_SESSION['msg']['rurl'] = currentURL();
+		$_SESSION['msg']['timeout'] = 20;
+		include($global->comFolder.'/redirect/error.php');
+	}
+	// if error found
+	// if there is no error
+	else {
+		$newPassword = randomPassword();
+		$updated = $db->update($_this->tableName, array('password'=> encode($newPassword)), array('email'=> $array['email']));
+			
+			// if data updated
+			if( $updated['affectedRow'] == 1 ){
+	
+				$_SESSION['msg']['main'] = 'You have successfully reset your password';
+				$_SESSION['msg']['more'] = 'An email has been dispatched into your email address. Please check your inbox/spam folder to get new password.';
+				$_SESSION['msg']['rurl'] = $comURL.'signin/';
+				include($global->comFolder.'/redirect/success.php');
+				
+				$mailSent = SendMail( $global->nofication_email, 'New password from '.$global->teamName.' Team!', 'Hi! Here is your new password - '.$newPassword.'<br /><br />Thanks<br />'.$global->teamName.' Team' );
+				
+				if(!$mailSent){
+					$_SESSION['msg']['main'] = 'Sorry, we are having trouble with e-mail';
+					$_SESSION['msg']['more'] = 'Please contact to your team leader to get your new password.';
+					$_SESSION['msg']['rurl'] = $comURL.'signin/';
+					include($global->comFolder.'/redirect/error.php');	
+				}
+				
+			}
+			else {
+				
+				$_SESSION['msg']['main'] = 'Sorry, an unknown error occurred';
+				$_SESSION['msg']['more'] = 'Please contact to your team leader to investigate and send a bug report <a href="mailto:'.$global->bug_report.'">here</a>.';
+				$_SESSION['msg']['rurl'] = $global->baseurl;
+				include($global->comFolder.'/redirect/error.php');
+					
+			}
+			// if data updated
+	}
+	// if there is no error
+	
+}
+// forget
 ?>

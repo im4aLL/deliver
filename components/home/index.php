@@ -1,8 +1,8 @@
 <?php
 /*
 * Deliver wiki
-* helper/index.php
-* 13.06.2013
+* home/index.php
+* 19.06.2013
 *
 * ===========================================
 * @package		1.0
@@ -13,9 +13,10 @@
 */
 defined("deliver") or die("Restriced Access");
 
-include('class/class.query.php');
-include('class/hPagination.class.php');
-include('lib/resize/resize-class.php');
+$_this = new StdClass;
+$_this->tableName = $config['tbl_prefix'].'users';
 
-include('function/core.php');
+if( $_SERVER['REQUEST_METHOD'] == 'POST' ) include($comDir.'_model.php');
+/*elseif($route['view']=='new' && !$_SESSION['logged'] ) include($comDir.'new.php');*/
+else include($comDir.'home.php');
 ?>

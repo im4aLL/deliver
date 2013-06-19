@@ -27,25 +27,29 @@ $db->connect($config);
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php echo $global->pageTitle; ?></title>
+<title><?php if($pageURL!=NULL && isset($route['component'])) echo preTitle($route['component']); echo $global->pageTitle; ?></title>
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/bootstrap/css/bootstrap-responsive.min.css">
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>css-js/style.css">
 
 <script src="<?php echo $global->baseurl ?>lib/jquery/jquery-1.10.1.min.js"></script>
+<script src="<?php echo $global->baseurl ?>lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="<?php echo $global->baseurl ?>lib/validate/jquery.validate.min.js"></script>
 <script src="<?php echo $global->baseurl ?>css-js/main.js"></script>
 </head>
 
 <body>
-	<?php
+	<?php	
 		// user info
 		if( $_SESSION['logged_user'] > 0 ){
 			$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'users', 'method' => PDO::FETCH_OBJ, 'condition' => ' WHERE id = "'.$_SESSION['logged_user'].'"');
 			$db->select($qryArray);
 			$p_userData = $db->result();
 			$userData = $p_userData[0];
+			
+			$p_username = explode("@", $userData->email);
+			$userData->username = strtolower($p_username[0]);
 		}
 		// user info
 				

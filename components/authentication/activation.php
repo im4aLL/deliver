@@ -30,7 +30,14 @@ if( $comRoute[0] != NULL && isValidMd5($comRoute[0]) ) {
 				$_SESSION['msg']['rurl'] = $comURL.'signin/';
 				include($global->comFolder.'/redirect/success.php');
 				
-				SendMail( $global->nofication_email, 'Account approval request', 'Hi, <br /><br />Someone created a new account at '.$global->pageTitle.' - <br /><br />'.implode('<br />', (array) $result[0]) );
+				$mailSent = SendMail( $global->nofication_email, 'Account approval request', 'Hi, <br /><br />Someone created a new account at '.$global->pageTitle.' - <br /><br />'.implode('<br />', (array) $result[0]) );
+				
+				if(!$mailSent){
+					$_SESSION['msg']['main'] = 'Sorry, we are having trouble with e-mail';
+					$_SESSION['msg']['more'] = 'Please contact to your team leader to get verified.';
+					$_SESSION['msg']['rurl'] = $global->baseurl;
+					include($global->comFolder.'/redirect/error.php');	
+				}
 				
 			}
 			else {

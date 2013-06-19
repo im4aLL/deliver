@@ -180,4 +180,78 @@ function SendMail( $to, $subject, $message ) {
 function isValidMd5($md5) {
     return !empty($md5) && preg_match('/^[a-f0-9]{32}$/', $md5);
 }
+
+function randomPassword($length=7) {
+    $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+    $pass = array();
+    $alphaLength = strlen($alphabet) - 1;
+    for ($i = 0; $i <= $length; $i++) {
+        $n = rand(0, $alphaLength);
+        $pass[] = $alphabet[$n];
+    }
+    return implode($pass);
+}
+
+function preTitle($comString){
+	$comString = str_replace("_", " ", $comString);
+	$result = ucwords($comString);
+	return $result.' - ';
+}
+
+// currently it support two level / need to add recursive later
+function genSubMenu($menuArray){
+	$subMenu = '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">';
+	
+	foreach($menuArray as $m){
+		if($m['name']=='Logout') $subMenu .= '<li class="divider"></li>';
+		$subMenu .=	'<li><a href="'.$m['link'].'">'.$m['name'].'</a></li>';
+	}
+	
+	$subMenu .= '</ul>';
+	return $subMenu;
+}
+
+function genMenu($menuArray, $class="nav", $active=NULL){
+	$menu = '<ul class="'.$class.'">';
+	
+	foreach($menuArray as $menuKey=>$m){
+		
+		if( isset($m['dropdown']) && count($m['dropdown'])>0 ) $hasSubmenu = true;
+		else $hasSubmenu = false;
+		
+		$menu .= '<li'.(($active==$menuKey)?'  class="active'.( ($hasSubmenu)?' dropdown':'' ).'"':( ($hasSubmenu)?' class="dropdown"':'') ).'>';
+		if($hasSubmenu) {
+			$menu .= '<a class="dropdown-toggle" data-toggle="dropdown" href="'.$m['link'].'"><i class="'.$m['icon'].'"></i> '.$m['name'].' <b class="caret"></b></a>';
+			$menu .= genSubMenu($m['dropdown']);	
+		}
+		else $menu .= '<a href="'.$m['link'].'"><i class="'.$m['icon'].'"></i> '.$m['name'].'</a>';
+		$menu .= '</li>';	
+	}
+	
+	$menu .= '</ul>';
+	
+	return $menu;
+}
+
+function ago($time) {
+   $periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
+   $lengths = array("60","60","24","7","4.35","12","10");
+
+   $now = time();
+
+       $difference     = $now - $time;
+       $tense         = "ago";
+
+   for($j = 0; $difference >= $lengths[$j] && $j < count($lengths)-1; $j++) {
+       $difference /= $lengths[$j];
+   }
+
+   $difference = round($difference);
+
+   if($difference != 1) {
+       $periods[$j].= "s";
+   }
+
+   return "$difference $periods[$j] ago ";
+}
 ?>
