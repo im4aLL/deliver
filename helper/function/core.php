@@ -48,7 +48,7 @@ function decode($sValue, $sSecretKey = 'hadi') {
 }
 
 function cln_url_string($string){
-	return preg_replace("/[^a-zA-Z0-9_-~#!]+/", "", $string);	
+	return preg_replace("/[^a-zA-Z0-9-_]+/", "", $string);	
 }
 
 function currentURL(){
@@ -253,5 +253,46 @@ function ago($time) {
    }
 
    return "$difference $periods[$j] ago ";
+}
+
+
+function ipadr(){ 
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])){ 
+        $ip = $_SERVER['HTTP_CLIENT_IP']; 
+    } 
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){ 
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR']; 
+    } 
+    else{ 
+        $ip = $_SERVER['REMOTE_ADDR']; 
+    } 
+    return $ip; 
+} 
+
+
+function secure_file_upload($file_name,$destination,$allowed_file_type=array(),$max_upload_size=2) {     
+    $max_upload_size_byte = $max_upload_size * 1024 * 1024;  
+     
+    if(!is_dir($destination))  
+        { 
+            $making = mkdir($destination,0777, true); 
+            chmod($destination, 0777); 
+     
+            if(!$making) return false; 
+        } 
+     
+    $fileName = $file_name['name']; 
+    $file_type = substr($fileName, strrpos($fileName, '.') + 1); 
+    $file_type = strtolower($file_type); 
+     
+    if( !array_search($file_type, $allowed_file_type) && !in_array($file_type, $allowed_file_type) ) return false; 
+    if( $file_name['size'] > $max_upload_size_byte ) return false; 
+    if( $file_name['error'] != 0 ) return false; 
+ 
+    $final_name = time()."_".preg_replace("/[^a-zA-Z0-9-_.]+/", "", $file_name['name']); 
+    $final_des = $destination.$final_name; 
+    $uploading = move_uploaded_file($file_name['tmp_name'],$final_des); 
+    if( !$uploading ) return false; 
+    return $final_name; 
 }
 ?>

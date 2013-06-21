@@ -18,10 +18,10 @@ $globalMenu = array(
 	'kbase' => array('name'=>'Knowledge base', 'icon'=>'icon-beaker', 'link' => '#' ),
 	'process' => array('name'=>'Process', 'icon'=>'icon-random', 'link' => '#' ),
 	'team' => array('name'=>'Team', 'icon'=>'icon-group', 'link' => '#' ),
-	'account' => array('name'=>'Account', 'icon'=>'icon-cogs', 'link' => 'javascript:void(0)', 
+	'profile' => array('name'=>'Account', 'icon'=>'icon-cogs', 'link' => 'javascript:void(0)', 
 						'dropdown' => array(
-							'changepass' => array('name'=>'Change password', 'icon'=>'icon-edit-sign', 'link' => '#' ),
-							'profile' => array('name'=>'Profile', 'icon'=>'icon-user', 'link' => '#' ),
+							'changepass' => array('name'=>'Change password', 'icon'=>'icon-edit-sign', 'link' => $global->baseurl.'profile/change-password/' ),
+							'profile' => array('name'=>'Profile', 'icon'=>'icon-user', 'link' => $global->baseurl.'profile/'.$userData->username.'/' ),
 							'logout' => array('name'=>'Logout', 'icon'=>'icon-power-off', 'link' => $global->baseurl.'authentication/logout/' )
 						)
 					)
@@ -34,7 +34,7 @@ $globalMenu = array(
             <div class="container">
             	
                 <a class="brand" href="<?php echo $global->baseurl ?>home/"><?php echo $global->teamName ?> team</a>
-                <?php echo genMenu($globalMenu, 'nav pull-right'); ?>
+                <?php echo genMenu($globalMenu, 'nav pull-right', $route['component']); ?>
                 
             </div>
         </div>

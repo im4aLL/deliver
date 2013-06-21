@@ -134,17 +134,20 @@ ul.msg-list { list-style:none; }
 
 /* #HEADER
 ==========================================*/
-header { min-height:51px; }
+header { min-height:71px; }
 
 /* #HOME
 ==========================================*/
-.home { padding-top:20px }
 .home .grids i { font-size:500%; }
 .home .grids { text-align:center; padding:30px 0px }
 .home .grids a.main { color:#8D8D8D; }
 .home .grids a.main span { color:#636363; display:block; font-family: 'Bebas'; font-size:26px; margin-top:10px }
 
 .home .grids a.main:hover { text-decoration:none; color:#dd2020 }
+
+/* #PROFILE
+==========================================*/
+.openfile { cursor:pointer }
 
 /* #Media Queries
 ================================================== */

@@ -67,16 +67,22 @@
 			{
 				// *** Get optimal width and height - based on $option
 				$optionArray = $this->getDimensions($newWidth, $newHeight, $option);
-
-				$optimalWidth  = $optionArray['optimalWidth'];
+				
+				$optimalWidth = $optionArray['optimalWidth'];
 				$optimalHeight = $optionArray['optimalHeight'];
-
-
+				
 				// *** Resample - create image canvas of x, y size
 				$this->imageResized = imagecreatetruecolor($optimalWidth, $optimalHeight);
+				
+				//2. Create an alpha-transparent color and fill the image with it */
+				imagealphablending($this->imageResized, false);
+				imagesavealpha($this->imageResized, true);
+				$bg = imagecolorallocatealpha($this->imageResized, 0, 0, 0, 127);
+				imagefilledrectangle($this->imageResized, 0, 0, $optimalWidth, $optimalHeight, $bg);
+				imagecolortransparent($this->imageResized, $bg);
+				
 				imagecopyresampled($this->imageResized, $this->image, 0, 0, 0, 0, $optimalWidth, $optimalHeight, $this->width, $this->height);
-
-
+				
 				// *** if option is 'crop', then crop too
 				if ($option == 'crop') {
 					$this->crop($optimalWidth, $optimalHeight, $newWidth, $newHeight);

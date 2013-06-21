@@ -40,7 +40,7 @@ $db->connect($config);
 </head>
 
 <body>
-	<?php	
+	<?php
 		// user info
 		if( $_SESSION['logged_user'] > 0 ){
 			$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'users', 'method' => PDO::FETCH_OBJ, 'condition' => ' WHERE id = "'.$_SESSION['logged_user'].'"');
@@ -58,7 +58,7 @@ $db->connect($config);
 				if($route['component']=='authentication') include($comDirIndex);
 				elseif($_SESSION['logged'] && $userData->state == 1) include($comDirIndex);
 				elseif($_SESSION['logged'] && $userData->state == 2) include($global->comFolder.'/redirect/pending.php');
-				else include($global->comFolder.'/error/404.php');
+				else echo redirect($global->baseurl.'authentication/signin/',0,true);
 			}
 			else include($global->comFolder.'/error/404.php');	
 		}
