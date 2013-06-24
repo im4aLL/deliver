@@ -46,6 +46,7 @@ defined("deliver") or die("Restriced Access");
         </div>
     
         <div class="form-actions">
+        	<input type="hidden" name="email" value="<?php echo $userData->email ?>">
             <button type="submit" name="update_pass" class="btn btn-inverse">Change password</button>
             <!--<button type="reset" class="btn pull-right">Reset</button>-->
         </div>
@@ -56,70 +57,42 @@ defined("deliver") or die("Restriced Access");
 
 <script>
 	$(document).ready(function(){
+		
+		$.validator.addMethod("notEqual", function(value, element, param) {
+		  return this.optional(element) || value != $(param).val();
+		}, "Please specify a different value");
 	
-		$("#update").validate({
+		$("#changepass").validate({
 			rules: {
-				name: {
+				oldpassword: {
 					required: true,
-					minlength: 6	
-				},
-				email: {
-					required: true,
-					email: true,
-					remote: "<?php echo $global->baseurl.$comDir ?>_ajax.check.duplicate.email.php"
+					minlength: 5
 				},
 				password: {
 					required: true,
-					minlength: 5
+					minlength: 5,
+					notEqual: "#oldpassword"
 				},
 				cpassword: {
 					required: true,
 					minlength: 5,
 					equalTo: "#password"
-				},
-				emp_id: {
-					required: true,
-					number: true	
-				},
-				cell_no: {
-					required: true,
-					minlength: 11	
-				},
-				skype: {
-					required: true,
-					minlength: 3	
 				}
 			},
 			messages: {
-				name: {
-					required: "Please enter your full name",
-					minlength: "Not your nick name!"	
-				},
-				email: {
-					required: "Enter an email address",
-					email: "Please enter a valid email address",
-					remote: "Sorry, this email address is already taken"
-				},
-				password: {
-					required: "Please enter a password",
+				oldpassword: {
+					required: "Please enter your old password",
 					minlength: "Password must be at least 5 char long"
 				},
+				password: {
+					required: "Please enter new password",
+					minlength: "Password must be at least 5 char long",
+					notEqual: "Your new password is same as old password"
+				},
 				cpassword: {
-					required: "Please retype the password",
+					required: "Please retype your new password",
 					minlength: "Password must be at least 5 char long",
 					equalTo: "Doesn't match with above password"
-				},
-				emp_id: {
-					required: "Please enter your employee ID",
-					number: "Must be number ex-250"
-				},
-				cell_no: {
-					required: "Please enter your mobile number",
-					minlength: "Your mobile should be 11 char long"	
-				},
-				skype: {
-					required: "Please enter your Skype ID",
-					minlength: "Please a valid Skype ID"
 				}
 			},
 			highlight: function(element) {

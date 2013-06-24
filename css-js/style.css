@@ -112,6 +112,8 @@ form label.error { color:#b94a48; font-size:11px }
 	text-shadow:none;
 }
 
+.error-m { color:#9d261d }
+
 /* #LOGIN
 ==========================================*/
 .container.login { max-width:500px; margin:0 auto; margin-top:5%; margin-bottom:5%; background-color:#FFF; }

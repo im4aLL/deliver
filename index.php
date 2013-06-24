@@ -31,6 +31,7 @@ $db->connect($config);
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/bootstrap/css/bootstrap-responsive.min.css">
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/font-awesome/css/font-awesome.min.css">
+<!--<link rel="stylesheet" href="<?php echo $global->baseurl ?>css-js/flat.css">-->
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>css-js/style.css">
 
 <script src="<?php echo $global->baseurl ?>lib/jquery/jquery-1.10.1.min.js"></script>

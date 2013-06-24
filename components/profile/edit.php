@@ -32,6 +32,18 @@ defined("deliver") or die("Restriced Access");
       <h1>Profile information <small>update</small></h1>
     </div>
     
+    <?php
+		if( $profileInfo->id != $userData->id ) {
+			echo '<div class="alert alert-error">';
+			echo 'Oh snap! you don\'t have enough privilege to access this page!';
+			echo '</div>';
+			
+			echo '<hr>';
+			require_once($global->comFolder.'/common/footer.php');
+			exit();
+		}
+	?>
+    
     <!--profile-->
     <form action="" method="post" class="form-horizontal" id="update" enctype="multipart/form-data">
     
@@ -79,6 +91,7 @@ defined("deliver") or die("Restriced Access");
             <div class="span6 text-right">
             	<img class="openfile" src="<?php echo $global->baseurl ?>images/users/<?php if($profileInfo->avatar==NULL) echo 'default.jpg'; else echo 'r_'.$profileInfo->avatar; ?>" alt="<?php echo $profileInfo->name; ?>">
                 <br><small><span class="changePath"></span> <a href="javascript:void(0)" class="openfile">edit avatar</a></small>
+                <br><small class="muted">recommended 270 x 350</small>
                 <br><input type="file" name="avatar" class="hide" id="avatar">
                 <input type="hidden" name="old_avatar" value="<?php echo $profileInfo->avatar; ?>">
                 <input type="hidden" name="where_id" value="<?php echo $profileInfo->id; ?>">

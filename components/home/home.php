@@ -20,7 +20,7 @@ defined("deliver") or die("Restriced Access");
     
     <div class="row profile_info">
     	<div class="span3">
-        	<div class="thumbnail"><img src="<?php echo $global->baseurl ?>images/users/default.jpg" alt="<?php echo $userData->name; ?>"></div>
+        	<div class="thumbnail"><img src="<?php echo $global->baseurl ?>images/users/<?php if($userData->avatar!=NULL) echo 'r_'.$userData->avatar; else echo 'default.jpg'; ?>" alt="<?php echo $userData->name; ?>"></div>
         </div>
         <div class="span9">
             <dl class="dl-horizontal">

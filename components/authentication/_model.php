@@ -149,7 +149,7 @@ elseif( isset($_POST['signin']) ){
 		// if match found
 		// if login not matchs
 		else {
-			$_SESSION['msg']['main'] = 'Invalid email or password. Please try again!';
+			$_SESSION['msg']['main'] = '<span class="error-m">Invalid email or password. Please try again!</span>';
 			$_SESSION['msg']['rurl'] = $comURL.'signin/';
 			include($global->comFolder.'/redirect/success.php');
 		}

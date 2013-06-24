@@ -15,7 +15,6 @@ defined("deliver") or die("Restriced Access");
 
 include('class/class.query.php');
 include('class/hPagination.class.php');
-include('lib/resize/resize-class.php');
 
 include('function/core.php');
 ?>
