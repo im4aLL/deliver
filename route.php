@@ -31,7 +31,7 @@ if( $pageURL != NULL ){
 	
 	// component query strings
 	$comRoute = array();
-	$prepareViewRoute = str_replace($comViewURL,'',currentURL());
+	$prepareViewRoute = str_replace(array($comViewURL, $global->baseurl),'',currentURL());
 	$p_comRoute = explode("/", $prepareViewRoute);
 	
 	if(is_array($p_comRoute) && count($p_comRoute)>0){
