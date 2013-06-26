@@ -51,6 +51,13 @@ function cln_url_string($string){
 	return preg_replace("/[^a-zA-Z0-9-_]+/", "", $string);	
 }
 
+function sant_str($str){
+	$str = trim(strtolower($str));
+	$str = str_replace(" ", "_", $str);
+	$normal = preg_replace("/[^a-zA-Z0-9_]+/", "", $str);
+	return $normal;	
+}
+
 function currentURL(){
 	$url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 	return filter_var($url, FILTER_SANITIZE_URL);	
@@ -87,6 +94,10 @@ function cln_data($string){
         $string = stripslashes($string);
 		
 	return $string;
+}
+
+function safe_string($str){
+	return filter_var($str, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
 }
 
 function sanitize($data,$type=array(),$exception=array()){
@@ -294,5 +305,55 @@ function secure_file_upload($file_name,$destination,$allowed_file_type=array(),$
     $uploading = move_uploaded_file($file_name['tmp_name'],$final_des); 
     if( !$uploading ) return false; 
     return $final_name; 
+}
+
+function strip_unsafe($string=NULL){
+
+    $unsafe = array(
+    '/<iframe(.*?)<\/iframe>/is',
+    '/<title(.*?)<\/title>/is',
+    '/<pre(.*?)<\/pre>/is',
+    '/<frame(.*?)<\/frame>/is',
+    '/<frameset(.*?)<\/frameset>/is',
+    '/<object(.*?)<\/object>/is',
+    '/<script(.*?)<\/script>/is',
+    '/<embed(.*?)<\/embed>/is',
+    '/<applet(.*?)<\/applet>/is',
+    '/<meta(.*?)>/is',
+    '/<!doctype(.*?)>/is',
+    '/<link(.*?)>/is',
+    '/<body(.*?)>/is',
+    '/<\/body>/is',
+    '/<head(.*?)>/is',
+    '/<\/head>/is',
+    '/onload="(.*?)"/is',
+    '/onunload="(.*?)"/is',
+	'/onclick="(.*?)"/is',
+    '/<html(.*?)>/is',
+    '/<\/html>/is');
+	
+	//'/<img(.*?)>/is';
+
+    $string = preg_replace($unsafe, "", $string);
+    return html_encode($string);
+}
+
+function html_encode($string){
+	return htmlentities($string, ENT_QUOTES, "UTF-8");	
+}
+
+function html_decode($string){
+	$output = html_entity_decode($string, ENT_QUOTES, "UTF-8");	
+	return stripslashes($output);
+}
+
+function genUrl($string){
+	$string = trim(strtolower($string));
+	$string = str_replace(" ", "_", $string);
+	$string = cln_url_string($string);
+	$string = str_replace(array("--", "__"), array("-", "_"), $string);
+	if( substr($string, -1) == '_' || substr($string, -1) == '-' ) 
+		$string = substr($string, 0, -1);
+	return $string;
 }
 ?>

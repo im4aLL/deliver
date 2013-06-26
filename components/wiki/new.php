@@ -21,16 +21,27 @@ defined("deliver") or die("Restriced Access");
       <h1>Add new article <small>wiki</small></h1>
     </div>
     
-    <form action="" method="post" class="form-horizontal" id="register">
+    <form action="" method="post" class="form-horizontal" id="kn_wiki_frm">
         
         <div class="control-group">
             <label class="control-label" for="category">Category</label>
             <div class="controls">
                 <select name="category" id="category">
                 	<option value="uncategorized">Uncategorized</option>
+                    <?php
+						$qryArray = array( 'tbl_name' => $_this->tableName, 'field' => array('category'), 'method' => PDO::FETCH_OBJ, 'groupby'=>'category' );
+						$db->select($qryArray);
+						$category = $db->result();
+						
+						if($db->total() > 0){
+							foreach($category as $row){
+								echo '<option value="'.$row->category.'">'.ucwords($row->category).'</option>';	
+							}
+						}
+					?>
                     <option value="create_new">Create new</option>
                 </select>
-                <span class="new_cat">New: <input type="text" name="new_category"></span>
+                <span class="new_cat">New: <input type="text" name="new_category" id="new_category"></span>
             </div>
         </div>
         
@@ -50,7 +61,6 @@ defined("deliver") or die("Restriced Access");
     
         <div class="form-actions">
             <button type="submit" name="kn_wiki" class="btn btn-info">Submit</button>
-            <!--<button type="reset" class="btn pull-right">Reset</button>-->
         </div>
     </form>
 
@@ -65,70 +75,50 @@ defined("deliver") or die("Restriced Access");
 			if( selected_category == 'create_new' ) $('.new_cat').show();
 			else $('.new_cat').hide();
 		});
+		
+		/*jQuery.validator.addMethod('cvalid', function(value, element, param) {
+			if( value != null ){
+				
+				var request = $.ajax({
+					url: "<?php echo $global->baseurl.$comDir ?>_ajax.check.duplicate.category.php",
+					type: "GET",
+					data: {cat : value}
+				});
+				
+				request.done(function(msg) {
+					if( msg == 'true' ) return true;
+					else return false;
+				});
+				
+			}
+			else return false;
+		}, 'Already exists!');*/
 	
-		$("#register").validate({
+		$("#kn_wiki_frm").validate({
 			rules: {
-				name: {
+				new_category: {
 					required: true,
-					minlength: 6	
+					remote: "<?php echo $global->baseurl.$comDir ?>_ajax.check.duplicate.category.php"	
 				},
-				email: {
+				title: {
 					required: true,
-					email: true,
-					remote: "<?php echo $global->baseurl.$comDir ?>_ajax.check.duplicate.email.php"
+					remote: "<?php echo $global->baseurl.$comDir ?>_ajax.check.duplicate.title.php"
 				},
-				password: {
-					required: true,
-					minlength: 5
-				},
-				cpassword: {
-					required: true,
-					minlength: 5,
-					equalTo: "#password"
-				},
-				emp_id: {
-					required: true,
-					number: true	
-				},
-				cell_no: {
-					required: true,
-					minlength: 11	
-				},
-				skype: {
-					required: true,
-					minlength: 3	
+				description: {
+					required: true
 				}
 			},
 			messages: {
-				name: {
-					required: "Please enter your full name",
-					minlength: "Not your nick name!"	
+				new_category: {
+					required: "Please enter a category name",
+					remote: "Please, try different category name"	
 				},
-				email: {
-					required: "Enter an email address",
-					email: "Please enter a valid email address",
-					remote: "Sorry, this email address is already taken"
+				title: {
+					required: "Please give a article title (hopefully unique)",
+					remote: "This article is already exists"
 				},
-				password: {
-					required: "Please enter a password",
-					minlength: "Password must be at least 5 char long"
-				},
-				cpassword: {
-					required: "Please retype the password",
-					minlength: "Password must be at least 5 char long",
-					equalTo: "Doesn't match with above password"
-				},
-				emp_id: {
-					required: "Please enter your employee ID",
-					number: "Must be number ex-250"
-				},
-				cell_no: {
-					required: "Please enter your mobile number",
-					minlength: "Your mobile should be 11 char long"	
-				},
-				skype: {
-					required: "Please enter your Skype ID",
-					minlength: "Please a valid Skype ID"
+				description: {
+					required: "Please enter brief description"
 				}
 			},
 			highlight: function(element) {
