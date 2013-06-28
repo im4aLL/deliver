@@ -151,6 +151,11 @@ header { min-height:71px; }
 ==========================================*/
 .openfile { cursor:pointer }
 
+.listrow { }
+.listrow .muted { color:#B7B7B7; }
+.listrow small { font-size:11px }
+.pagination .btn { margin-left:5px }
+
 /* #Media Queries
 ================================================== */
  

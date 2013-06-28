@@ -16,13 +16,15 @@ $array = array();
 $array = $_POST;
 
 // if hit kn_wiki button
-if( isset($array['kn_wiki']) ){	
+if( isset($array['kn_wiki']) ){
 	
 	unset($array['kn_wiki']);
 	if( $array['new_category'] != NULL ) $array['category'] = $array['new_category'];
 	unset($array['new_category']);
 	$array = sanitize($array, array(), array('description'));
 	$array['description'] = strip_unsafe($array['description']);
+	$tags = trim($array['tags']);
+	unset($array['tags']);
 	
 	// checking for error
 	$errorList = array();
@@ -43,6 +45,7 @@ if( isset($array['kn_wiki']) ){
 	// if there is an error
 	// if there is no error
 	else {
+		$array['category'] = strtolower($array['category']);
 		$array['url'] = genUrl($array['title']);
 		$array['created_at'] = date("Y-m-d");
 		$array['state'] = 0;
@@ -53,6 +56,37 @@ if( isset($array['kn_wiki']) ){
 		
 		// if data inserted
 		if( $inserted['affectedRow'] == 1 ){
+			
+			// tags
+			if( $tags != NULL ){
+				$generatedTagArray = genTag($tags, true);
+				if( count($generatedTagArray) == 0 ) $generatedTagArray = genTag($array['title']);
+			}
+			else {
+				$generatedTagArray = genTag($array['title']);	
+			}
+			
+			if( count($generatedTagArray) > 0 ){
+				foreach($generatedTagArray as $tag){
+					$t_array = array();
+					$t_array['tags'] = $tag;
+					$t_inserted = $db->insert($config['tbl_prefix'].'tags', $t_array, array('tags'));
+					
+					if($t_inserted['duplicate']==true){
+						$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'tags', 'field' => array('id'), 'method' => PDO::FETCH_OBJ, 'condition' => " WHERE tags = '".$tag."'");
+						$db->select($qryArray);
+						$getted_tag_attribute = $db->result();
+						$inserted_tag_id = $getted_tag_attribute[0]->id;
+					}
+					else $inserted_tag_id = $t_inserted['insertedId'];
+					
+					$relate_q_array = array();
+					$relate_q_array['tag_id'] = $inserted_tag_id;
+					$relate_q_array['kw_id'] = $inserted['insertedId'];
+					$db->insert($config['tbl_prefix'].'tag_relate', $relate_q_array, array('tag_id', 'kw_id'));
+				}
+			}
+			// tags
 			
 			$_SESSION['msg']['main'] = 'Thank you for submit article into wiki!';
 			$_SESSION['msg']['more'] = 'An administrator must approve this article, Before appears to wiki. It may take up to 1-2 business day(s).';

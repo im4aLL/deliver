@@ -58,6 +58,13 @@ defined("deliver") or die("Restriced Access");
             	<textarea id="description" name="description"></textarea>
             </div>
         </div>
+        
+        <div class="control-group">
+            <label class="control-label" for="tags">Tags</label>
+            <div class="controls">
+            	<input type="text" id="tags" placeholder="tags" class="input-xxlarge" name="tags">
+            </div>
+        </div>
     
         <div class="form-actions">
             <button type="submit" name="kn_wiki" class="btn btn-info">Submit</button>
@@ -72,7 +79,10 @@ defined("deliver") or die("Restriced Access");
 		$('.new_cat').hide();
 		$('#category').change(function(){
 			var selected_category = $(this).val();
-			if( selected_category == 'create_new' ) $('.new_cat').show();
+			if( selected_category == 'create_new' ) {
+				$('.new_cat').show();
+				$('#new_category').val('');
+			}
 			else $('.new_cat').hide();
 		});
 		
@@ -149,6 +159,9 @@ defined("deliver") or die("Restriced Access");
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/elfinder/css/elfinder.css">
 <script src="<?php echo $global->baseurl ?>lib/elfinder/js/elfinder.min.js"></script>
 
+<!--select2-->
+<link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/select2/select2.css">
+<script src="<?php echo $global->baseurl ?>lib/select2/select2.js"></script>
 
 <script>
 
@@ -171,6 +184,20 @@ defined("deliver") or die("Restriced Access");
 			}
 		};
 		$('#description').elrte(opts);
+		
+		$("#category").select2();
+		<?php
+			$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'tags', 'field' => array('tags'), 'method' => PDO::FETCH_OBJ);
+			$db->select($qryArray);
+			$getted_tags = $db->result();
+			if( count($getted_tags) > 0 ){
+				$tag = array();
+				foreach($getted_tags as $row){
+					$tag[] = '"'.$row->tags.'"';	
+				}
+			}
+		?>
+		$("#tags").select2({ tags:[<?php echo implode(",", $tag) ?>], tokenSeparators: [",", " "] });
 	});
 </script>
 
