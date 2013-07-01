@@ -215,7 +215,7 @@ function genSubMenu($menuArray){
 	
 	foreach($menuArray as $m){
 		if($m['name']=='Logout') $subMenu .= '<li class="divider"></li>';
-		$subMenu .=	'<li><a href="'.$m['link'].'">'.$m['name'].'</a></li>';
+		$subMenu .=	'<li><a href="'.$m['link'].'"><i class="'.$m['icon'].'"></i> '.$m['name'].'</a></li>';
 	}
 	
 	$subMenu .= '</ul>';

@@ -14,7 +14,12 @@
 defined("deliver") or die("Restriced Access");
 
 $globalMenu = array(
-	'wiki' => array('name'=>'Wiki', 'icon'=>'icon-book', 'link' => $global->baseurl.'wiki/' ),
+	'wiki' => array('name'=>'Wiki', 'icon'=>'icon-book', 'link' => 'javascript:void(0)',
+						'dropdown' => array(
+							'listwiki' => array('name'=>'Browse All', 'icon'=>'icon-tasks', 'link' => $global->baseurl.'wiki/' ),
+							'addwiki' => array('name'=>'Add new wiki', 'icon'=>'icon-plus-sign-alt', 'link' => $global->baseurl.'wiki/new/' )
+						) 
+					),
 	'kbase' => array('name'=>'Knowledge base', 'icon'=>'icon-beaker', 'link' => '#' ),
 	'process' => array('name'=>'Process', 'icon'=>'icon-random', 'link' => '#' ),
 	'team' => array('name'=>'Team', 'icon'=>'icon-group', 'link' => '#' ),
@@ -29,7 +34,7 @@ $globalMenu = array(
 ?>
 <header>
 	<div class="navbar navbar-inverse navbar-fixed-top">
-    
+        
         <div class="navbar-inner">
             <div class="container">
             	

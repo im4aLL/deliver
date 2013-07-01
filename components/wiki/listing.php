@@ -19,8 +19,6 @@ defined("deliver") or die("Restriced Access");
 <div class="container">
 	
     <div class="text-center">
-    	
-        <a href="<?php echo $comURL.'new/' ?>" class="btn btn-normal btn-primary">Submit an article to wiki</a>
         
         <?php 
 			if(isset($_GET['keyword']) && $_GET['keyword']!=NULL) $keyword = safe_string($_GET['keyword']);

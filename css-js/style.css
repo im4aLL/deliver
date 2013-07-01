@@ -113,6 +113,9 @@ form label.error { color:#b94a48; font-size:11px }
 }
 
 .error-m { color:#9d261d }
+.no-mp { margin:0; padding:0 }
+h2 a { color:#777; }
+h2 a:hover { text-decoration:none }
 
 /* #LOGIN
 ==========================================*/
@@ -155,6 +158,23 @@ header { min-height:71px; }
 .listrow .muted { color:#B7B7B7; }
 .listrow small { font-size:11px }
 .pagination .btn { margin-left:5px }
+
+/* #ARTICLE
+==========================================*/
+.profile-img { margin-top:10px }
+.art-description {  }
+.art-info { font-size:12px; }
+.art-info .author { padding-top:10px }
+.art-info .member_since { font-size:11px }
+.additional-info { margin:10px 0px }
+.art-description h1, .art-description h2, .art-description h3, .art-description h4, .art-description h5, .art-description h6 { font-family: 'Droid' }
+.art-description h1.art-title { margin-bottom:20px; color:#636363; font-family: 'Bebas'; font-size:46px }
+a.helpful { font-weight:bold; }
+.article .well { margin:30px 0px }
+.article .well a, .article .well a:hover { color:#787878; text-decoration:none }
+.article .well .is_helpful { color:#08c; font-weight:bold }
+.article .well .is_not_helpful { color:#A2A2A2 }
+.article .well .mark_as_helpful { color:#57ad68 }
 
 /* #Media Queries
 ================================================== */
