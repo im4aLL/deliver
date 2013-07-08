@@ -18,6 +18,7 @@ $_this->tableName = $config['tbl_prefix'].'kn_wiki';
 
 if( $_SERVER['REQUEST_METHOD'] == 'POST' ) include($comDir.'_model.php');
 elseif($route['view']=='new' ) include($comDir.'new.php');
+elseif($route['view']=='edit' ) include($comDir.'edit.php');
 elseif( $route['view'] == 'article' && $comRoute[0]!=NULL ) include($comDir.'single.php'); 
 else include($comDir.'listing.php');
 ?>

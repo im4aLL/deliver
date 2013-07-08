@@ -34,7 +34,7 @@ $db->connect($config);
 <!--<link rel="stylesheet" href="<?php echo $global->baseurl ?>css-js/flat.css">-->
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>css-js/style.css">
 
-<script src="<?php echo $global->baseurl ?>lib/jquery/jquery-<?php if($route['component']=='wiki' && $route['view']=='new') echo '1.7.2'; else echo '1.10.1'; ?>.min.js"></script>
+<script src="<?php echo $global->baseurl ?>lib/jquery/jquery-<?php if($route['component']=='wiki' && ($route['view']=='new' || $route['view']=='edit' )) echo '1.7.2'; else echo '1.10.1'; ?>.min.js"></script>
 <script src="<?php echo $global->baseurl ?>lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="<?php echo $global->baseurl ?>lib/validate/jquery.validate.min.js"></script>
 <script src="<?php echo $global->baseurl ?>css-js/main.js"></script>

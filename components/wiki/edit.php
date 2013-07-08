@@ -1,8 +1,8 @@
 <?php
 /*
 * Deliver wiki
-* wiki/new.php
-* 25.06.2013
+* wiki/edit.php
+* 08.07.2013
 *
 * ===========================================
 * @package		1.0
@@ -18,8 +18,19 @@ defined("deliver") or die("Restriced Access");
 <div class="container">
     
     <div class="page-header">
-      <h1>Add new article <small>wiki</small></h1>
+      <h1>Edit article <small>wiki</small></h1>
     </div>
+    
+    <?php
+		$fetchArray = array( 'tbl_name' => $_this->tableName, 'method' => PDO::FETCH_OBJ, 'condition'=>" WHERE url = '".$comRoute[0]."' AND type = 'wiki'" );
+		$db->select($fetchArray);
+		$origDataResult = $db->result();
+		$origData = $origDataResult[0];
+		
+		/*echo '<pre>';
+		print_r($origData);
+		echo '</pre>';*/
+	?>
     
     <form action="" method="post" class="form-horizontal" id="kn_wiki_frm">
         
@@ -35,7 +46,7 @@ defined("deliver") or die("Restriced Access");
 						
 						if($db->total() > 0){
 							foreach($category as $row){
-								echo '<option value="'.$row->category.'">'.ucwords($row->category).'</option>';	
+								echo '<option value="'.$row->category.'"'.(($origData->category==$row->category)?' selected="selected"':'').'>'.ucwords($row->category).'</option>';	
 							}
 						}
 					?>
@@ -48,14 +59,14 @@ defined("deliver") or die("Restriced Access");
         <div class="control-group">
             <label class="control-label" for="title">Title</label>
             <div class="controls">
-            	<input type="text" id="title" placeholder="Article title here" class="input-xxlarge" name="title">
+            	<input type="text" id="title" placeholder="Article title here" class="input-xxlarge" name="title" value="<?php echo $origData->title ?>">
             </div>
         </div>
         
         <div class="control-group">
             <label class="control-label" for="description">Description</label>
             <div class="controls">
-            	<textarea id="description" name="description"></textarea>
+            	<textarea id="description" name="description"><?php echo $origData->description ?></textarea>
             </div>
         </div>
         
@@ -65,9 +76,16 @@ defined("deliver") or die("Restriced Access");
             	<input type="text" id="tags" placeholder="tags" class="input-xxlarge" name="tags">
             </div>
         </div>
+        
+        <div class="control-group">
+            <label class="control-label" for="modify_reason">Modify reason</label>
+            <div class="controls">
+            	<input type="text" id="modify_reason" placeholder="Small brief of modification reason" class="input-block-level" name="modify_reason">
+            </div>
+        </div>
     
         <div class="form-actions">
-            <button type="submit" name="kn_wiki" class="btn btn-info">Submit</button>
+            <button type="submit" name="update_kn_wiki" class="btn btn-info">Update</button>
         </div>
     </form>
 
@@ -112,7 +130,7 @@ defined("deliver") or die("Restriced Access");
 				},
 				title: {
 					required: true,
-					remote: "<?php echo $global->baseurl.$comDir ?>_ajax.check.duplicate.title.php"
+					remote: "<?php echo $global->baseurl.$comDir ?>_ajax.check.duplicate.title.php?url=<?php echo $comRoute[0] ?>"
 				},
 				description: {
 					required: true
@@ -163,6 +181,21 @@ defined("deliver") or die("Restriced Access");
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/select2/select2.css">
 <script src="<?php echo $global->baseurl ?>lib/select2/select2.js"></script>
 
+<?php
+	$db->query("SELECT a.tags FROM ".$config['tbl_prefix']."tags as a 
+				LEFT JOIN
+					".$config['tbl_prefix']."tag_relate as b ON b.tag_id = a.id
+				WHERE
+					b.kw_id = '".$origData->id."'");
+	
+	$pre_tag = array();
+	if( $db->total() > 0 ){
+		foreach($db->result() as $row){
+			$pre_tag[] = '"'.$row->tags.'"';	
+		}
+	}
+?>
+
 <script>
 
 	$(document).ready(function(){
@@ -198,7 +231,7 @@ defined("deliver") or die("Restriced Access");
 				}
 			}
 		?>
-		$("#tags").select2({ tags:[<?php echo implode(",", $tag) ?>], tokenSeparators: [",", " "] });
+		$("#tags")<?php if(count($pre_tag)>0) echo '.val(['.implode(',', $pre_tag).'])'; ?>.select2({ tags:[<?php echo implode(",", $tag) ?>], tokenSeparators: [",", " "] });
 	});
 </script>
 

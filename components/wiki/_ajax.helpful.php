@@ -20,20 +20,43 @@ include('../../global.settings.php');
 $db = new db();
 $db->connect($config);
 
-$encoded = decode( str_replace(" ", "+", safe_string($_GET['json'])) );
-$getted = json_decode($encoded);
-
-foreach($getted as $key=>$val){
-	$data[$key]	= (int) $val;
-}
-
-if( $data['to_user_id'] == $data['from_user_id'] ){
-	echo 'false';	
+if( strstr($_GET['json'], "@@no") ){
+	
+	$encoded = decode( str_replace(array(" ", "@@no"), array("+",""), safe_string($_GET['json'])) );
+	$getted = json_decode($encoded);
+	
+	foreach($getted as $key=>$val){
+		$data[$key]	= (int) $val;
+	}
+	
+	if( $data['to_user_id'] == $data['from_user_id'] ){
+		echo 'false';	
+	}
+	else {
+		$deleted = $db->delete($config['tbl_prefix'].'reputation', $data);
+		if($deleted['affectedRow'] == 1) echo 'true';
+		else echo 'false';
+	}
+	
 }
 else {
-	$inserted = $db->insert($config['tbl_prefix'].'reputation', $data, array('to_user_id', 'for_kn_id', 'from_user_id'));
-	if($inserted['affectedRow'] == 1) echo 'true';
-	else echo 'false';
+
+	$encoded = decode( str_replace(" ", "+", safe_string($_GET['json'])) );
+	$getted = json_decode($encoded);
+	
+	foreach($getted as $key=>$val){
+		$data[$key]	= (int) $val;
+	}
+	
+	if( $data['to_user_id'] == $data['from_user_id'] ){
+		echo 'false';	
+	}
+	else {
+		$inserted = $db->insert($config['tbl_prefix'].'reputation', $data, array('to_user_id', 'for_kn_id', 'from_user_id'));
+		if($inserted['affectedRow'] == 1) echo 'true';
+		else echo 'false';
+	}
+	
 }
 
 $db->disconnect();

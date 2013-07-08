@@ -65,6 +65,7 @@ defined("deliver") or die("Restriced Access");
             if($db->total() == 1){
                 $singleArray = $db->result();
                 $single = $singleArray[0];
+
 				
 				echo '<div class="row">';
 					
@@ -83,6 +84,13 @@ defined("deliver") or die("Restriced Access");
 					echo '</div>';
 					
 					echo '<div class="span10">';
+						
+						// edit link
+						if($userData->id == $single->author_id){
+							echo '<a class="pull-right btn btn-info" href="'.$comURL.'edit/'.$comRoute[0].'/">Update this wiki</a>';	
+						}
+						// edit link
+						
 						echo '<div class="art-description">';
 							echo '<h1 class="art-title">'.$single->title.'</h1>';
 							echo html_decode($single->description);
@@ -96,15 +104,34 @@ defined("deliver") or die("Restriced Access");
 						echo '</div>';
 						
 						echo '<div class="well">';
-						echo '<div class="pull-left make_helpful_block">
-							<strong class="mark_as_helpful">Did you find this helpful?</strong> 
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<a href="javascript:void(0)" class="helpful" rel="'.encode(json_encode(array('rep'=>$global->rep_wiki, 'to_user_id'=>$single->author_id, 'for_kn_id'=>$single->id, 'from_user_id'=> $userData->id))).'"><i class="icon-ok"></i> Yes</a>
-							<span class="loading muted hide"><i class="icon-refresh icon-spin"></i> <span>Submitting ...</span></span>
-							&nbsp;&nbsp; <span class="error-occured hide">An error occurred. Please try again/later.</span>
-							</div>';
-						echo '<div class="pull-left hide is_helpful_block"><span class="is_helpful">This found helpful by you.</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="helpful is_not_helpful"><i class="icon-remove"></i> No, this is not!</a></div>';
-						echo '<div class="pull-right make_helpful_block">11 people found this helpful</div>';
+						
+						$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'reputation', 'method' => PDO::FETCH_OBJ, 'condition' => ' WHERE for_kn_id = '.$single->id );
+						$db->select($qryArray);
+						
+						function is_helpful_current_user($array){
+							global $userData;
+							foreach($array as $key=>$val){
+								if($val->from_user_id == $userData->id ) return true;	
+							}
+							return false;
+						}
+						$is_helpful_current_user = is_helpful_current_user($db->result());
+						$jsonString = encode(json_encode(array('rep'=>$global->rep_wiki, 'to_user_id'=>$single->author_id, 'for_kn_id'=>$single->id, 'from_user_id'=> $userData->id)));
+						
+						echo '<div class="pull-left '.(($is_helpful_current_user)?'hide':'').' make_helpful_block">
+						<strong class="mark_as_helpful">Did you find this helpful?</strong> 
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="javascript:void(0)" class="helpful" rel="'.$jsonString.'"><i class="icon-ok"></i> Yes</a>
+						<span class="loading muted hide"><i class="icon-refresh icon-spin"></i> <span>Submitting ...</span></span>
+						&nbsp;&nbsp; <span class="error-occured hide">An error occurred. Please try again/later.</span>
+						</div>';
+							
+						echo '<div class="pull-left '.(($is_helpful_current_user)?'':'hide').' is_helpful_block"><span class="is_helpful">This found helpful by you.</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="helpful is_not_helpful" rel="'.$jsonString.'@@no"><i class="icon-remove"></i> No, this is not!</a>
+						<span class="loading muted hide"><i class="icon-refresh icon-spin"></i> <span>Submitting ...</span></span>
+						&nbsp;&nbsp; <span class="error-occured hide">An error occurred. Please try again/later.</span>
+						</div>';
+						echo '<div class="pull-right make_helpful_block">'.$db->total().' people found this helpful</div>';
+						
 						echo '</div>';
 						
 						echo '<hr>';
@@ -143,12 +170,12 @@ defined("deliver") or die("Restriced Access");
 			}
 		});
 		
-		$('.helpful').click(function(){
+		$('.make_helpful_block a.helpful').click(function(){
 			var jsonData = $(this).attr('rel');
 			
 			$('.error-occured').addClass('hide');
 			$(this).parent().children('.loading').removeClass('hide');
-			$(this).hide();
+			$(this).addClass('hide');
 			
 			var request = $.ajax({
 				url: "<?php echo $global->baseurl.$comDir ?>_ajax.helpful.php",
@@ -158,11 +185,13 @@ defined("deliver") or die("Restriced Access");
 			
 			request.done(function(msg) {
 				if(msg=='true') {
-					$('.make_helpful_block').remove();
+					$('.make_helpful_block').addClass('hide');
 					$('.is_helpful_block').removeClass('hide');
+					$('.is_helpful_block .helpful').removeClass('hide');
+					$('.is_helpful_block .loading').addClass('hide');
 				}
 				else {
-					$('.helpful').show();
+					$('.helpful').removeClass('hide');
 					$('.helpful').parent().children('.loading').addClass('hide');
 					$('.error-occured').removeClass('hide');
 				}
@@ -170,11 +199,49 @@ defined("deliver") or die("Restriced Access");
 			
 			request.fail(function(jqXHR, textStatus) {
 				$('.helpful').parent().children('.loading').addClass('hide');
-				$('.helpful').show();
+				$('.helpful').removeClass('hide');
 			});
 			
 			return false;	
 		});
+		
+		$('.is_helpful_block a.is_not_helpful').click(function(){
+			var jsonData = $(this).attr('rel');
+			
+			$('.error-occured').addClass('hide');
+			$(this).parent().children('.loading').removeClass('hide');
+			$(this).addClass('hide');
+			
+			var request = $.ajax({
+				url: "<?php echo $global->baseurl.$comDir ?>_ajax.helpful.php",
+				type: "GET",
+				data: {json : jsonData}
+			});
+			
+			request.done(function(msg) {
+				if(msg=='true') {
+					$('.is_helpful_block').addClass('hide');
+					$('.make_helpful_block').removeClass('hide');
+					$('.make_helpful_block .helpful').removeClass('hide');
+					$('.make_helpful_block .loading').addClass('hide');
+					
+					$('.make_helpful_block:last').addClass('hide');
+				}
+				else {
+					$('.is_helpful_block').removeClass('hide');
+					$('.is_not_helpful').parent().children('.loading').addClass('hide');
+					$('.error-occured').removeClass('hide');
+				}
+			});
+			
+			request.fail(function(jqXHR, textStatus) {
+				$('.is_not_helpful').parent().children('.loading').addClass('hide');
+				$('.is_not_helpful').removeClass('hide');
+			});
+			
+			return false;	
+		});
+		
 	});
 </script>
 
