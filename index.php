@@ -34,7 +34,11 @@ $db->connect($config);
 <!--<link rel="stylesheet" href="<?php echo $global->baseurl ?>css-js/flat.css">-->
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>css-js/style.css">
 
-<script src="<?php echo $global->baseurl ?>lib/jquery/jquery-<?php if($route['component']=='wiki' && ($route['view']=='new' || $route['view']=='edit' )) echo '1.7.2'; else echo '1.10.1'; ?>.min.js"></script>
+<script src="<?php echo $global->baseurl ?>lib/jquery/jquery-<?php 
+	if(($route['component']=='wiki' || $route['component']=='knowledgebase') && ($route['view']=='new' || $route['view']=='edit' )) 
+		echo '1.7.2'; 
+	else 
+		echo '1.10.1'; ?>.min.js"></script>
 <script src="<?php echo $global->baseurl ?>lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="<?php echo $global->baseurl ?>lib/validate/jquery.validate.min.js"></script>
 <script src="<?php echo $global->baseurl ?>css-js/main.js"></script>
@@ -76,3 +80,15 @@ $db->connect($config);
 <?php
 $db->disconnect();
 ?>
+
+<!--
+                        _     _      ____                  _      
+   __ _ _ __ __ _ _ __ | |__ (_) ___|  _ \ ___  ___  _ __ | | ___ 
+  / _` | '__/ _` | '_ \| '_ \| |/ __| |_) / _ \/ _ \| '_ \| |/ _ \
+ | (_| | | | (_| | |_) | | | | | (__|  __/  __/ (_) | |_) | |  __/
+  \__, |_|  \__,_| .__/|_| |_|_|\___|_|   \___|\___/| .__/|_|\___|
+  |___/          |_|                                |_|           
+  
+  This script is made for graphicPeople @Original author - Deliver team @author contact - Al.Hadi@adpeople.com
+  
+-->

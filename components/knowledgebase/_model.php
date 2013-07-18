@@ -20,6 +20,7 @@ if( isset($array['kn_wiki']) ){
 	
 	unset($array['kn_wiki']);
 	if(isset($array['el-select'])) unset($array['el-select']);
+	
 	if( $array['new_category'] != NULL ) $array['category'] = $array['new_category'];
 	unset($array['new_category']);
 	$array = sanitize($array, array(), array('description'));
@@ -51,7 +52,7 @@ if( isset($array['kn_wiki']) ){
 		$array['created_at'] = date("Y-m-d");
 		$array['state'] = 0;
 		$array['by_id'] = $userData->id;
-		$array['type'] = 'wiki';
+		$array['type'] = 'kbase';
 		
 		$inserted = $db->insert($_this->tableName, $array, array('title', 'url'));
 		
@@ -89,8 +90,8 @@ if( isset($array['kn_wiki']) ){
 			}
 			// tags
 			
-			$_SESSION['msg']['main'] = 'Thank you for submit article into wiki!';
-			$_SESSION['msg']['more'] = 'An administrator must approve this article, Before appears to wiki. It may take up to 1-2 business day(s).';
+			$_SESSION['msg']['main'] = 'Thank you for submit article into knowledge base!';
+			$_SESSION['msg']['more'] = 'An administrator must approve this article, Before appears to knowledge base. It may take up to 1-2 business day(s).';
 			$_SESSION['msg']['rurl'] = $comURL;
 			include($global->comFolder.'/redirect/success.php');
 			
@@ -123,6 +124,7 @@ if( isset($array['kn_wiki']) ){
 elseif(isset($_POST['update_kn_wiki'])){	
 	unset($array['update_kn_wiki']);
 	if(isset($array['el-select'])) unset($array['el-select']);
+	
 	if( $array['new_category'] != NULL ) $array['category'] = $array['new_category'];
 	unset($array['new_category']);
 	$array = sanitize($array, array(), array('description'));
@@ -195,7 +197,7 @@ elseif(isset($_POST['update_kn_wiki'])){
 			}
 			// tags
 			
-			$_SESSION['msg']['main'] = 'Wiki has been updated!';
+			$_SESSION['msg']['main'] = 'knowledge base has been updated!';
 			$_SESSION['msg']['rurl'] = $comURL.'article/'.$comRoute[0].'/';
 			include($global->comFolder.'/redirect/success.php');
 		}

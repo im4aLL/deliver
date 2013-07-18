@@ -21,7 +21,7 @@ defined("deliver") or die("Restriced Access");
       <h1>Edit article <small>wiki</small></h1>
     </div>
     
-    <?php
+    <?php		
 		$fetchArray = array( 'tbl_name' => $_this->tableName, 'method' => PDO::FETCH_OBJ, 'condition'=>" WHERE url = '".$comRoute[0]."' AND type = 'wiki'" );
 		$db->select($fetchArray);
 		$origDataResult = $db->result();
@@ -32,7 +32,7 @@ defined("deliver") or die("Restriced Access");
 		echo '</pre>';*/
 	?>
     
-    <form action="" method="post" class="form-horizontal" id="kn_wiki_frm">
+    <form action="" method="post" class="form-horizontal" id="update_kn_wiki_frm">
         
         <div class="control-group">
             <label class="control-label" for="category">Category</label>
@@ -74,13 +74,14 @@ defined("deliver") or die("Restriced Access");
             <label class="control-label" for="tags">Tags</label>
             <div class="controls">
             	<input type="text" id="tags" placeholder="tags" class="input-xxlarge" name="tags">
+                <button id="revert_tags" class="btn tips" data-toggle="tooltip" title="Revert back to old"><i class="icon-undo"></i></button>
             </div>
         </div>
         
         <div class="control-group">
             <label class="control-label" for="modify_reason">Modify reason</label>
             <div class="controls">
-            	<input type="text" id="modify_reason" placeholder="Small brief of modification reason" class="input-block-level" name="modify_reason">
+            	<input type="text" id="modify_reason" placeholder="Small brief of modification reason" class="input-block-level" name="modify_reason" data-provide="typeahead" data-items="4" data-source='["updated description", "updated tags", "Category updated", "title updated", "added more description"]' autocomplete="off">
             </div>
         </div>
     
@@ -122,7 +123,7 @@ defined("deliver") or die("Restriced Access");
 			else return false;
 		}, 'Already exists!');*/
 	
-		$("#kn_wiki_frm").validate({
+		$("#update_kn_wiki_frm").validate({
 			rules: {
 				new_category: {
 					required: true,
@@ -133,6 +134,9 @@ defined("deliver") or die("Restriced Access");
 					remote: "<?php echo $global->baseurl.$comDir ?>_ajax.check.duplicate.title.php?url=<?php echo $comRoute[0] ?>"
 				},
 				description: {
+					required: true
+				},
+				modify_reason: {
 					required: true
 				}
 			},
@@ -147,6 +151,9 @@ defined("deliver") or die("Restriced Access");
 				},
 				description: {
 					required: "Please enter brief description"
+				},
+				modify_reason: {
+					required: "Please commit the changes"
 				}
 			},
 			highlight: function(element) {
@@ -182,21 +189,29 @@ defined("deliver") or die("Restriced Access");
 <script src="<?php echo $global->baseurl ?>lib/select2/select2.js"></script>
 
 <?php
-	$db->query("SELECT a.tags FROM ".$config['tbl_prefix']."tags as a 
+	$db->query("SELECT a.tags, a.id FROM ".$config['tbl_prefix']."tags as a 
 				LEFT JOIN
 					".$config['tbl_prefix']."tag_relate as b ON b.tag_id = a.id
 				WHERE
 					b.kw_id = '".$origData->id."'");
 	
 	$pre_tag = array();
+	$pre_tag_text = array();
 	if( $db->total() > 0 ){
 		foreach($db->result() as $row){
-			$pre_tag[] = '"'.$row->tags.'"';	
+			//$pre_tag[]= '{id: "'.$row->id.'", text: "'.$row->tags.'"}';
+			$pre_tag[]= '{id: "'.$row->tags.'", text: "'.$row->tags.'"}';	
 		}
 	}
 ?>
 
 <script>
+
+	function getActualId(text, array){
+		for(var i=0; i<array.length; i++){
+			if(array[i].text==text) return array[i].id;	
+		}
+	}
 
 	$(document).ready(function(){
 		var opts = {
@@ -220,18 +235,45 @@ defined("deliver") or die("Restriced Access");
 		
 		$("#category").select2();
 		<?php
-			$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'tags', 'field' => array('tags'), 'method' => PDO::FETCH_OBJ);
+			$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'tags', 'field' => array('id, tags'), 'method' => PDO::FETCH_OBJ);
 			$db->select($qryArray);
 			$getted_tags = $db->result();
 			
+			$all_tag = array();
 			$tag = array();
 			if( count($getted_tags) > 0 ){
 				foreach($getted_tags as $row){
-					$tag[] = '"'.$row->tags.'"';	
+					$all_tag[] = '{id: "'.$row->id.'", text: "'.$row->tags.'"}';
+					$tag[] = '{id: "'.$row->tags.'", text: "'.$row->tags.'"}';
 				}
 			}
 		?>
-		$("#tags")<?php if(count($pre_tag)>0) echo '.val(['.implode(',', $pre_tag).'])'; ?>.select2({ tags:[<?php echo implode(",", $tag) ?>], tokenSeparators: [",", " "] });
+		
+		var preTags = [<?php echo implode(',', $pre_tag) ?>];
+		var allTags = [<?php echo implode(',', $tag) ?>];
+		var allTagsWithId = [<?php echo implode(',', $all_tag) ?>];
+		
+		$("#tags").select2({ tags:allTags, tokenSeparators: [",", " "] });
+		$("#tags").select2('data', preTags);
+		$("#tags").change(function(e) {
+			if( e.removed ) {
+				var topic_relate = <?php echo $origData->id; ?>;
+				if(typeof(e.removed.id) != 'undefined'){
+					if(confirm("Remove `"+e.removed.text+"` tag?")){
+						$.ajax({
+						  type: "POST",
+						  url: "<?php echo $global->baseurl.$comDir ?>_ajax.del.tag.php",
+						  data: { tag_id: getActualId(e.removed.id, allTagsWithId), kw_id: topic_relate }
+						});		
+					}
+				}
+			}
+		});
+		
+		$('#revert_tags').click(function(){
+			$("#tags").select2('data', preTags);
+			return false;	
+		});
 	});
 </script>
 

@@ -117,6 +117,12 @@ form label.error { color:#b94a48; font-size:11px }
 h2 a { color:#777; }
 h2 a:hover { text-decoration:none }
 
+:focus {outline:none;}
+::-moz-focus-inner {border:0;}
+
+a:active { outline: none; }
+a:focus, .btn:focus { -moz-outline-style: none; outline:none; text-decoration:none }
+
 /* #LOGIN
 ==========================================*/
 .container.login { max-width:500px; margin:0 auto; margin-top:5%; margin-bottom:5%; background-color:#FFF; }
@@ -175,12 +181,92 @@ a.helpful { font-weight:bold; }
 .article .well .is_helpful { color:#08c; font-weight:bold }
 .article .well .is_not_helpful { color:#A2A2A2 }
 .article .well .mark_as_helpful { color:#57ad68 }
+.found_this_helpful { text-align:right; color:#636363; font-size:12px; margin-top:-20px }
+.found_this_helpful a { color:#0088CC; }
+.found_this_helpful i { margin-left:3px }
+
+/* #COMMENT
+==========================================*/
+.comments { margin-top:10px; }
+.comments .user_comments { background:url(../images/site/comment-bg.gif) repeat-y 11.7% 0px }
+.comments .row { padding-bottom:30px; }
+.comments .pinfo { text-align:right; font-size:11px }
+.comments .comment {
+	background:#FFF;
+	border: 1px solid #ececec;
+	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;	
+}
+.comments .info {  
+	background: #ffffff;
+	background: -moz-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, #ffffff), color-stop(47%, #f6f6f6), color-stop(100%, #ededed));
+	background: -webkit-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+	background: -o-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+	background: -ms-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+	background: linear-gradient(to bottom, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=0 );
+	padding:10px 15px;
+	-webkit-border-top-left-radius: 4px;
+	-webkit-border-top-right-radius: 4px;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-topright: 4px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-bottom:1px solid #ececec;
+	position:relative
+}
+.comments .comment .author_name { display:inline-block; margin-right:5px }
+.comments .comment .author_name a { color:#8D8D8D }
+.comments .commit { padding:10px 15px }
+.comments .comment .left_arrow { 
+	display:inline-block;
+	width:15px;
+	height:20px;
+	background:url(../images/site/comment-arrow.png) no-repeat 0px 0px;
+	position:absolute;
+	top:11px;
+	left:-15px;
+}
+
+.moderation_menu a { display:inline-block; margin-left:10px; color:#8E8E8E; cursor:pointer; text-shadow:0px 1px 0px #fff; font-size:12px }
+.moderation_menu a:hover { text-decoration:none; color:#3A3A3A }
+.moderation_menu [class^="icon-"]:before, .moderation_menu [class*=" icon-"]:before { cursor:pointer }
+
+.action_buttons { margin-left:10px }
+.action_buttons a { display:inline-block; margin-right:5px; color:#B7B7B7 }
+.action_buttons a:hover { text-decoration:none }
+.action_buttons [class^="icon-"]:before, .action_buttons [class*=" icon-"]:before { cursor:pointer }
+.up_vote.added { color:#57AD68 }
+.down_vote.added { color:#DD2020 }
+
+.edit_mode .action_buttons { display:none }
+.edit_mode .vlist { display:none }
+
+.comment { position:relative }
+.comment .loading_state { position:absolute; left:-26px; top:13px; z-index:10; }
+
+#comment_form .loading_state { margin-right:10px }
+.btn .icon-spin[class^="icon-"].hide, .nav .icon-spin[class^="icon-"].hide, .btn .icon-spin[class*=" icon-"].hide, .nav .icon-spin[class*=" icon-"].hide { display:none }
+
+.error_state { color:#DD2020 }
+#comment_form .error_state { margin-left:10px; font-weight:bold }
+
+.vlist { list-style:none; font-size:12px; margin:0px; padding:0px; display:inline-block; color:#ddd }
+.vlist li { display:inline; margin-right:3px }
+.vlist a { color:#B7B7B7 }
 
 /* #Media Queries
 ================================================== */
  
 /* Smaller than standard 960 (devices and browsers) */
-@media only screen and (max-width: 959px) {}
+@media only screen and (max-width: 959px) {
+	.comments .user_comments { background:none }	
+}
 
 /* Tablet Portrait size to standard 960 (devices and browsers) */
 @media only screen and (min-width: 768px) and (max-width: 959px) {}

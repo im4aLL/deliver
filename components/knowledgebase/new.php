@@ -18,7 +18,7 @@ defined("deliver") or die("Restriced Access");
 <div class="container">
     
     <div class="page-header">
-      <h1>Add new article <small>wiki</small></h1>
+      <h1>Add new <small>knowledge base</small></h1>
     </div>
     
     <form action="" method="post" class="form-horizontal" id="kn_wiki_frm">
@@ -29,7 +29,7 @@ defined("deliver") or die("Restriced Access");
                 <select name="category" id="category">
                 	<option value="uncategorized">Uncategorized</option>
                     <?php
-						$qryArray = array( 'tbl_name' => $_this->tableName, 'field' => array('category'), 'method' => PDO::FETCH_OBJ, 'groupby'=>'category', 'condition' => " WHERE type='wiki'" );
+						$qryArray = array( 'tbl_name' => $_this->tableName, 'field' => array('category'), 'method' => PDO::FETCH_OBJ, 'groupby'=>'category', 'condition' => " WHERE type='kbase'" );
 						$db->select($qryArray);
 						$category = $db->result();
 						

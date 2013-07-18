@@ -1,7 +1,7 @@
 <?php
 /*
 * Deliver wiki
-* components/wiki/_ajax.check.duplicate.category.php
+* components/wiki/_ajax.check.duplicate.title.php
 * 14.06.2013
 *
 * ===========================================
@@ -20,10 +20,12 @@ include('../../global.settings.php');
 $db = new db();
 $db->connect($config);
 
-$cat = strtolower(sant_str($_GET['new_category']));
+$title = safe_string($_GET['title']);
+if(isset($_GET['url'])) $url = safe_string($_GET['url']);
+else $url = NULL;
 
-if ( $cat!=NULL ) {
-	$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'kn_wiki', 'field' => array('id'), 'method' => PDO::FETCH_OBJ, 'condition' => ' WHERE category = "'.$cat.'" AND type="wiki"');
+if ( $title!=NULL ) {
+	$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'kn_wiki', 'field' => array('id'), 'method' => PDO::FETCH_OBJ, 'condition' => ' WHERE title = "'.$title.'" AND type="kbase" '.(($url!=NULL)?" AND url !='".$url."'":"").' ');
 	$db->select($qryArray);
 	
 	if($db->total()>0) echo 'false';

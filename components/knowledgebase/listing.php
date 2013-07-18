@@ -51,7 +51,7 @@ defined("deliver") or die("Restriced Access");
 			
 			if(!isset($searchString)) $searchString = NULL;
 			
-			echo '<h2><i class="'.$globalMenu['wiki']['icon'].'"></i> '.$globalMenu['wiki']['name'].'</h2>'; 
+			echo '<h2><i class="'.$globalMenu['knowledgebase']['icon'].'"></i> '.$globalMenu['knowledgebase']['name'].'</h2>'; 
 		?>
     
         <form>
@@ -63,7 +63,7 @@ defined("deliver") or die("Restriced Access");
                     	<!--<li class="disabled"><a href="javascript:void(0)">Category</a></li>-->
                         <li><a href="javascript:void(0)" rel="tags">Tags</a></li>
                         <?php
-							$qryArray = array( 'tbl_name' => $_this->tableName, 'field' => array('category'), 'method' => PDO::FETCH_OBJ, 'groupby'=>'category', 'orderby'=>'category', 'condition' => " WHERE type='wiki'" );
+							$qryArray = array( 'tbl_name' => $_this->tableName, 'field' => array('category'), 'method' => PDO::FETCH_OBJ, 'groupby'=>'category', 'orderby'=>'category', 'condition' => " WHERE type='kbase'" );
 							$db->select($qryArray);
 							$category = $db->result();
 							
@@ -89,7 +89,7 @@ defined("deliver") or die("Restriced Access");
 			{
 				$db->query("SELECT a.title
 							FROM ".$_this->tableName." as a 
-							WHERE a.type='wiki' ".(($searchString)?' AND ('.$searchString.') ':'')." ");
+							WHERE a.type='kbase' ".(($searchString)?' AND ('.$searchString.') ':'')." ");
 							
 				$paginator = new hPagination();
 				$paginator->page_url        = ($keyword!=NULL && $in!=NULL)?$comURL.'?keyword='.str_replace(" ", "+",$keyword).'&in='.$in:$comURL;
@@ -108,7 +108,7 @@ defined("deliver") or die("Restriced Access");
 							FROM ".$_this->tableName." as a 
 							LEFT JOIN
 								".$config['tbl_prefix']."users as b ON b.id = a.by_id
-							WHERE a.type='wiki' ".(($searchString)?' AND ('.$searchString.') ':'')." ORDER by a.id DESC ".$paginator->limit());
+							WHERE a.type='kbase' ".(($searchString)?' AND ('.$searchString.') ':'')." ORDER by a.id DESC ".$paginator->limit());
 				$data = $db->result();
 				
 				if( count($data) > 0 ){

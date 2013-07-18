@@ -23,7 +23,7 @@ $db->connect($config);
 $cat = strtolower(sant_str($_GET['new_category']));
 
 if ( $cat!=NULL ) {
-	$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'kn_wiki', 'field' => array('id'), 'method' => PDO::FETCH_OBJ, 'condition' => ' WHERE category = "'.$cat.'" AND type="wiki"');
+	$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'kn_wiki', 'field' => array('id'), 'method' => PDO::FETCH_OBJ, 'condition' => ' WHERE category = "'.$cat.'" AND type="kbase"');
 	$db->select($qryArray);
 	
 	if($db->total()>0) echo 'false';

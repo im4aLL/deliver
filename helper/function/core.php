@@ -244,7 +244,10 @@ function genMenu($menuArray, $class="nav", $active=NULL){
 	return $menu;
 }
 
-function ago($time) {
+function ago($time, $parseMin = false) {
+	
+	if(!$parseMin) if( date("Y-m-d", $time) == date("Y-m-d") ) return "today";
+	
    $periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
    $lengths = array("60","60","24","7","4.35","12","10");
 
@@ -265,6 +268,67 @@ function ago($time) {
 
    return "$difference $periods[$j] ago ";
 }
+
+/*function ago($timestamp, $parseMin = false){
+	if(!$parseMin) if( date("Y-m-d", $timestamp) == date("Y-m-d") ) return "today";
+	
+    //type cast, current time, difference in timestamps
+    $timestamp      = (int) $timestamp;
+    $current_time   = time();
+    $diff           = $current_time - $timestamp;
+   
+    //intervals in seconds
+    $intervals      = array (
+        'year' => 31556926, 'month' => 2629744, 'week' => 604800, 'day' => 86400, 'hour' => 3600, 'minute'=> 60
+    );
+   
+    //now we just find the difference
+    if ($diff == 0)
+    {
+        return 'just now';
+    }   
+
+    if ($diff < 60)
+    {
+        return $diff == 1 ? $diff . ' second ago' : $diff . ' seconds ago';
+    }       
+
+    if ($diff >= 60 && $diff < $intervals['hour'])
+    {
+        $diff = floor($diff/$intervals['minute']);
+        return $diff == 1 ? $diff . ' minute ago' : $diff . ' minutes ago';
+    }       
+
+    if ($diff >= $intervals['hour'] && $diff < $intervals['day'])
+    {
+        $diff = floor($diff/$intervals['hour']);
+        return $diff == 1 ? $diff . ' hour ago' : $diff . ' hours ago';
+    }   
+
+    if ($diff >= $intervals['day'] && $diff < $intervals['week'])
+    {
+        $diff = floor($diff/$intervals['day']);
+        return $diff == 1 ? $diff . ' day ago' : $diff . ' days ago';
+    }   
+
+    if ($diff >= $intervals['week'] && $diff < $intervals['month'])
+    {
+        $diff = floor($diff/$intervals['week']);
+        return $diff == 1 ? $diff . ' week ago' : $diff . ' weeks ago';
+    }   
+
+    if ($diff >= $intervals['month'] && $diff < $intervals['year'])
+    {
+        $diff = floor($diff/$intervals['month']);
+        return $diff == 1 ? $diff . ' month ago' : $diff . ' months ago';
+    }   
+
+    if ($diff >= $intervals['year'])
+    {
+        $diff = floor($diff/$intervals['year']);
+        return $diff == 1 ? $diff . ' year ago' : $diff . ' years ago';
+    }
+}*/
 
 
 function ipadr(){ 
@@ -357,7 +421,7 @@ function genUrl($string){
 }
 
 function genTag($string, $from_tag=false){
-	$stopwords = array("a", "about", "above", "above", "across", "after", "afterwards", "again", "against", "all", "almost", "alone", "along", "already", "also","although","always","am","among", "amongst", "amoungst", "amount",  "an", "and", "another", "any","anyhow","anyone","anything","anyway", "anywhere", "are", "around", "as",  "at", "back","be","became", "because","become","becomes", "becoming", "been", "before", "beforehand", "behind", "being", "below", "beside", "besides", "between", "beyond", "bill", "both", "bottom","but", "by", "call", "can", "cannot", "cant", "co", "con", "could", "couldnt", "cry", "de", "describe", "detail", "do", "done", "down", "due", "during", "each", "eg", "eight", "either", "eleven","else", "elsewhere", "empty", "enough", "etc", "even", "ever", "every", "everyone", "everything", "everywhere", "except", "few", "fifteen", "fify", "fill", "find", "fire", "first", "five", "for", "former", "formerly", "forty", "found", "four", "from", "front", "full", "further", "get", "give", "go", "had", "has", "hasnt", "have", "he", "hence", "her", "here", "hereafter", "hereby", "herein", "hereupon", "hers", "herself", "him", "himself", "his", "how", "however", "hundred", "ie", "if", "in", "inc", "indeed", "interest", "into", "is", "it", "its", "itself", "keep", "last", "latter", "latterly", "least", "less", "ltd", "made", "many", "may", "me", "meanwhile", "might", "mill", "mine", "more", "moreover", "most", "mostly", "move", "much", "must", "my", "myself", "name", "namely", "neither", "never", "nevertheless", "next", "nine", "no", "nobody", "none", "noone", "nor", "not", "nothing", "now", "nowhere", "of", "off", "often", "on", "once", "one", "only", "onto", "or", "other", "others", "otherwise", "our", "ours", "ourselves", "out", "over", "own","part", "per", "perhaps", "please", "put", "rather", "re", "same", "see", "seem", "seemed", "seeming", "seems", "serious", "several", "she", "should", "show", "side", "since", "sincere", "six", "sixty", "so", "some", "somehow", "someone", "something", "sometime", "sometimes", "somewhere", "still", "such", "system", "take", "ten", "than", "that", "the", "their", "them", "themselves", "then", "thence", "there", "thereafter", "thereby", "therefore", "therein", "thereupon", "these", "they", "thickv", "thin", "third", "this", "those", "though", "three", "through", "throughout", "thru", "thus", "to", "together", "too", "top", "toward", "towards", "twelve", "twenty", "two", "un", "under", "until", "up", "upon", "us", "very", "via", "was", "we", "well", "were", "what", "whatever", "when", "whence", "whenever", "where", "whereafter", "whereas", "whereby", "wherein", "whereupon", "wherever", "whether", "which", "while", "whither", "who", "whoever", "whole", "whom", "whose", "why", "will", "with", "within", "without", "would", "yet", "you", "your", "yours", "yourself", "yourselves", "the");
+	$stopwords = array("a", "about", "above", "above", "across", "after", "afterwards", "again", "against", "all", "almost", "alone", "along", "already", "also","although","always","am","among", "amongst", "amoungst", "amount",  "an", "and", "another", "any","anyhow","anyone","anything","anyway", "anywhere", "are", "around", "as",  "at", "back","be","became", "because","become","becomes", "becoming", "been", "before", "beforehand", "behind", "being", "below", "beside", "besides", "between", "beyond", "bill", "both", "bottom","but", "by", "call", "can", "cannot", "cant", "co", "con", "could", "couldnt", "cry", "de", "describe", "detail", "do", "done", "down", "due", "during", "each", "eg", "eight", "either", "eleven","else", "elsewhere", "empty", "enough", "etc", "even", "ever", "every", "everyone", "everything", "everywhere", "except", "few", "fifteen", "fify", "fill", "find", "fire", "first", "five", "for", "former", "formerly", "forty", "found", "four", "from", "front", "full", "further", "get", "give", "go", "had", "has", "hasnt", "have", "he", "hence", "her", "here", "hereafter", "hereby", "herein", "hereupon", "hers", "herself", "him", "himself", "his", "how", "however", "hundred", "ie", "if", "in", "inc", "indeed", "interest", "into", "is", "it", "its", "itself", "keep", "last", "latter", "latterly", "least", "less", "ltd", "made", "many", "may", "me", "meanwhile", "might", "mill", "mine", "more", "moreover", "most", "mostly", "move", "much", "must", "my", "myself", "name", "namely", "neither", "never", "nevertheless", "next", "nine", "no", "nobody", "none", "noone", "nor", "not", "nothing", "now", "nowhere", "of", "off", "often", "on", "once", "one", "only", "onto", "or", "other", "others", "otherwise", "our", "ours", "ourselves", "out", "over", "own","part", "per", "perhaps", "please", "put", "rather", "re", "same", "see", "seem", "seemed", "seeming", "seems", "serious", "several", "she", "should", "show", "side", "since", "sincere", "six", "sixty", "so", "some", "somehow", "someone", "something", "sometime", "sometimes", "somewhere", "still", "such", "system", "take", "ten", "than", "that", "the", "their", "them", "themselves", "then", "thence", "there", "thereafter", "thereby", "therefore", "therein", "thereupon", "these", "they", "thickv", "thin", "third", "this", "those", "though", "three", "through", "throughout", "thru", "thus", "to", "together", "too", "top", "toward", "towards", "twelve", "twenty", "two", "un", "under", "until", "up", "upon", "us", "very", "via", "was", "we", "well", "were", "what", "whatever", "when", "whence", "whenever", "where", "whereafter", "whereas", "whereby", "wherein", "whereupon", "wherever", "whether", "which", "while", "whither", "who", "whoever", "whole", "whom", "whose", "why", "will", "with", "within", "without", "would", "yet", "you", "your", "yours", "yourself", "yourselves", "the", "flagged");
 	
 	$result = array();
 	

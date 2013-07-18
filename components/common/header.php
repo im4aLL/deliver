@@ -14,16 +14,21 @@
 defined("deliver") or die("Restriced Access");
 
 $globalMenu = array(
-	'wiki' => array('name'=>'Wiki', 'icon'=>'icon-book', 'link' => 'javascript:void(0)',
+	'wiki' => array('name'=>'Wiki', 'icon'=>'icon-book', 'link' => $global->baseurl.'wiki/',
 						'dropdown' => array(
 							'listwiki' => array('name'=>'Browse All', 'icon'=>'icon-tasks', 'link' => $global->baseurl.'wiki/' ),
 							'addwiki' => array('name'=>'Add new wiki', 'icon'=>'icon-plus-sign-alt', 'link' => $global->baseurl.'wiki/new/' )
 						) 
 					),
-	'kbase' => array('name'=>'Knowledge base', 'icon'=>'icon-beaker', 'link' => '#' ),
+	'knowledgebase' => array('name'=>'Knowledge base', 'icon'=>'icon-beaker', 'link' => $global->baseurl.'knowledgebase/',
+						'dropdown' => array(
+							'listwiki' => array('name'=>'Browse All', 'icon'=>'icon-tasks', 'link' => $global->baseurl.'knowledgebase/' ),
+							'addwiki' => array('name'=>'New post', 'icon'=>'icon-plus-sign-alt', 'link' => $global->baseurl.'knowledgebase/new/' )
+						) 
+					),
 	'process' => array('name'=>'Process', 'icon'=>'icon-random', 'link' => '#' ),
 	'team' => array('name'=>'Team', 'icon'=>'icon-group', 'link' => '#' ),
-	'profile' => array('name'=>'Account', 'icon'=>'icon-cogs', 'link' => 'javascript:void(0)', 
+	'profile' => array('name'=>'Account', 'icon'=>'icon-cogs', 'link' => $global->baseurl.'profile/'.$userData->username.'/', 
 						'dropdown' => array(
 							'changepass' => array('name'=>'Change password', 'icon'=>'icon-edit-sign', 'link' => $global->baseurl.'profile/change-password/' ),
 							'profile' => array('name'=>'Profile', 'icon'=>'icon-user', 'link' => $global->baseurl.'profile/'.$userData->username.'/' ),

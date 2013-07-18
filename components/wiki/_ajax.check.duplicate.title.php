@@ -25,7 +25,7 @@ if(isset($_GET['url'])) $url = safe_string($_GET['url']);
 else $url = NULL;
 
 if ( $title!=NULL ) {
-	$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'kn_wiki', 'field' => array('id'), 'method' => PDO::FETCH_OBJ, 'condition' => ' WHERE title = "'.$title.'" '.(($url!=NULL)?" AND url !='".$url."'":"").' ');
+	$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'kn_wiki', 'field' => array('id'), 'method' => PDO::FETCH_OBJ, 'condition' => ' WHERE title = "'.$title.'"  AND type="wiki" '.(($url!=NULL)?" AND url !='".$url."'":"").' ');
 	$db->select($qryArray);
 	
 	if($db->total()>0) echo 'false';

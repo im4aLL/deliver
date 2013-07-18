@@ -1,8 +1,8 @@
 <?php
 /*
 * Deliver wiki
-* components/wiki/_ajax.check.duplicate.category.php
-* 14.06.2013
+* components/wiki/_ajax.del.tag.php
+* 12.07.2013
 *
 * ===========================================
 * @package		1.0
@@ -11,6 +11,9 @@
 * @version    	1.0.0 beta
 * ===========================================
 */
+session_start();
+if(!isset($_SESSION['logged']) || !$_SESSION['logged']) die();
+
 define("deliver", true);
 
 include('../../config.php');
@@ -20,16 +23,10 @@ include('../../global.settings.php');
 $db = new db();
 $db->connect($config);
 
-$cat = strtolower(sant_str($_GET['new_category']));
+$tag_id = (isset($_POST['tag_id']))? intval($_POST['tag_id']):0;
+$kw_id = (isset($_POST['kw_id']))? intval($_POST['kw_id']):0;
 
-if ( $cat!=NULL ) {
-	$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'kn_wiki', 'field' => array('id'), 'method' => PDO::FETCH_OBJ, 'condition' => ' WHERE category = "'.$cat.'" AND type="wiki"');
-	$db->select($qryArray);
-	
-	if($db->total()>0) echo 'false';
-	else echo 'true';
-}
-else echo 'false';
+if($tag_id>0 && $kw_id>0) $db->delete($config['tbl_prefix'].'tag_relate', array('tag_id'=>$tag_id, 'kw_id'=>$kw_id));
 
 $db->disconnect();
 ?>

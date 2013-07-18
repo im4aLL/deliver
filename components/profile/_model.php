@@ -32,7 +32,7 @@ if( isset($_POST['update_info']) ){
 			$final_file = $destination.'r_'.$uploaded_file_name;
 			$final_thumb_file = $destination.'r_thumb_'.$uploaded_file_name;
 			
-			include('../../lib/resize/resize-class.php');
+			include('lib/resize/resize-class.php');
 			
 			$resizeObj = new resize($orig_file);
 			$resizeObj -> resizeImage(270, 350, 'crop');

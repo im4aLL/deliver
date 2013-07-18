@@ -20,7 +20,7 @@ defined("deliver") or die("Restriced Access");
 	<div class="clearfix">
         <div class="pull-left">
         	
-			<?php echo '<h2 class="no-mp"><a href="'.$comURL.'"><i class="'.$globalMenu['wiki']['icon'].'"></i> '.$globalMenu['wiki']['name'].'</a></h2>'; ?>
+			<?php echo '<h2 class="no-mp"><a href="'.$comURL.'"><i class="'.$globalMenu['knowledgebase']['icon'].'"></i> '.$globalMenu['knowledgebase']['name'].'</a></h2>'; ?>
         
         </div>
         <div class="pull-right">
@@ -61,11 +61,10 @@ defined("deliver") or die("Restriced Access");
                                 FROM ".$_this->tableName." as a 
                                 LEFT JOIN
                                     ".$config['tbl_prefix']."users as b ON b.id = a.by_id
-                                WHERE a.type='wiki' AND a.url='".$comRoute[0]."'");
+                                WHERE a.type='kbase' AND a.url='".$comRoute[0]."'");
             if($db->total() == 1){
                 $singleArray = $db->result();
                 $single = $singleArray[0];
-
 				
 				echo '<div class="row">';
 					
@@ -87,7 +86,7 @@ defined("deliver") or die("Restriced Access");
 						
 						// edit link
 						if($userData->id == $single->author_id){
-							echo '<a class="pull-right tips" href="'.$comURL.'edit/'.$comRoute[0].'/" data-toggle="tooltip" data-placement="left" title="update this wiki"><small><i class="icon-pencil"></i> edit</small></a>';	
+							echo '<a class="pull-right tips" href="'.$comURL.'edit/'.$comRoute[0].'/" data-toggle="tooltip" data-placement="bottom" title="update this knowledge base"><small><i class="icon-pencil"></i> edit</small></a>';	
 						}
 						// edit link
 						
@@ -140,6 +139,7 @@ defined("deliver") or die("Restriced Access");
 								$datas[] = '<a href="'.getProfileUrl($row->voter_email).'" target="_blank">'.$row->voter_name.'</a>';	
 							}
 						}
+						
 						echo '<a href="#userlist" data-toggle="modal" class="pull-right make_helpful_block">'.$db->total().' people found this helpful</a>';
 						
 						echo '</div>';
@@ -158,6 +158,7 @@ defined("deliver") or die("Restriced Access");
     </div>
         
 </div>
+
 
 <div id="userlist" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-header">
@@ -269,6 +270,8 @@ defined("deliver") or die("Restriced Access");
 		
 	});
 </script>
+
+<?php require_once($comDir.'comment.php'); ?>
 
 <div class="container">
 	<hr>
