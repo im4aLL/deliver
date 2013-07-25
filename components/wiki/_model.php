@@ -16,8 +16,7 @@ $array = array();
 $array = $_POST;
 
 // if hit kn_wiki button
-if( isset($array['kn_wiki']) ){
-	
+if( isset($array['kn_wiki']) ){	
 	unset($array['kn_wiki']);
 	if(isset($array['el-select'])) unset($array['el-select']);
 	if( $array['new_category'] != NULL ) $array['category'] = $array['new_category'];
@@ -30,8 +29,9 @@ if( isset($array['kn_wiki']) ){
 	// checking for error
 	$errorList = array();
 	
+	if($array['project']=='flagged') $errorList[] = 'Please select a project from list';
 	if($array['category']=='flagged') $errorList[] = 'Invalid category name!';
-	if($array['title']=='flagged') $errorList[] = 'Please enter a valid title';	
+	if($array['title']=='flagged') $errorList[] = 'Please enter a valid title';		
 	if(trim($array['description'])==NULL) $errorList[] = 'Please write something in description';	
 	// checking for error
 	
@@ -89,6 +89,9 @@ if( isset($array['kn_wiki']) ){
 			}
 			// tags
 			
+			// adding reputation
+			$db->insert($config['tbl_prefix'].'reputation', array('rep'=>$global->rep_add_new_wiki, 'to_user_id'=>$userData->id, 'from_user_id'=> -1, 'for_kn_id'=>$inserted['insertedId']), array('to_user_id', 'for_kn_id', 'from_user_id'));
+			
 			$_SESSION['msg']['main'] = 'Thank you for submit article into wiki!';
 			$_SESSION['msg']['more'] = 'An administrator must approve this article, Before appears to wiki. It may take up to 1-2 business day(s).';
 			$_SESSION['msg']['rurl'] = $comURL;
@@ -133,6 +136,7 @@ elseif(isset($_POST['update_kn_wiki'])){
 	// checking for error
 	$errorList = array();
 	
+	if($array['project']=='flagged') $errorList[] = 'Please select a project from list';
 	if($array['category']=='flagged') $errorList[] = 'Invalid category name!';
 	if($array['title']=='flagged') $errorList[] = 'Please enter a valid title';	
 	if($array['modify_reason']=='flagged') $errorList[] = 'You have forget to commit the changes';	

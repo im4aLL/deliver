@@ -42,10 +42,8 @@ $globalMenu = array(
         
         <div class="navbar-inner">
             <div class="container">
-            	
                 <a class="brand" href="<?php echo $global->baseurl ?>home/"><?php echo $global->teamName ?> team</a>
                 <?php echo genMenu($globalMenu, 'nav pull-right', $route['component']); ?>
-                
             </div>
         </div>
     

@@ -474,4 +474,14 @@ function getProfileUrl($email){
 	$ppURL = $global->baseurl.'profile/'.$pUrl.'/';
 	return $ppURL;
 }
+
+function get_rep($emp_id){
+	global $db;
+	global $config;
+	
+	$db->query("SELECT SUM(rep) as reputation FROM ".$config['tbl_prefix']."reputation WHERE to_user_id = '$emp_id'");
+	$rep_r = $db->result();
+
+	return $rep_r[0]->reputation > 0 ? $rep_r[0]->reputation : 0;
+}
 ?>

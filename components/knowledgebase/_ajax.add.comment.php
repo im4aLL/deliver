@@ -23,28 +23,24 @@ include('../../global.settings.php');
 $db = new db();
 $db->connect($config);
 
-// user info
-if( $_SESSION['logged_user'] > 0 ){
-	$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'users', 'method' => PDO::FETCH_OBJ, 'condition' => ' WHERE id = "'.$_SESSION['logged_user'].'"');
-	$db->select($qryArray);
-	$p_userData = $db->result();
-	$userData = $p_userData[0];
-	
-	$p_username = explode("@", $userData->email);
-	$userData->username = strtolower($p_username[0]);
+if(!$_SESSION['logged_user']) {
+	echo json_encode(array('affectedRow' => 0, 'insertedId' => 0, 'duplicate' => 0));
+	exit();	
 }
-// user info
 
 // Posted data
 $array = array();
 $array['comment'] = strip_unsafe($_POST['comment']);
 $array['to_id'] = intval($_POST['to_id']);
-$array['by_user_id'] = $userData->id;
+$array['by_user_id'] = $_SESSION['logged_user'];
 $array['created_at'] = date("Y-m-d H:i:s");
 
 if($array['comment']!=NULL && $array['to_id']>0){
 	$inserted = $db->insert($config['tbl_prefix'].'comments', $array, array('comment', 'by_user_id', 'to_id'));
 	echo json_encode($inserted);
+	
+	// adding reputation
+	$db->insert($config['tbl_prefix'].'reputation', array('rep'=>$global->rep_comment, 'to_user_id'=>$_SESSION['logged_user'], 'from_user_id'=> -1, 'for_comment_id'=>$inserted['insertedId']), array('to_user_id', 'for_comment_id', 'from_user_id'));
 }
 else echo json_encode(array('affectedRow' => 0, 'insertedId' => 0, 'duplicate' => 0));
 

@@ -21,6 +21,18 @@ include('route.php');
 
 $db = new db();
 $db->connect($config);
+
+// user info
+if( $_SESSION['logged_user'] > 0 ){
+	$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'users', 'method' => PDO::FETCH_OBJ, 'condition' => ' WHERE id = "'.$_SESSION['logged_user'].'"');
+	$db->select($qryArray);
+	$p_userData = $db->result();
+	$userData = $p_userData[0];
+	
+	$p_username = explode("@", $userData->email);
+	$userData->username = strtolower($p_username[0]);
+}
+// user info
 ?>
 <!doctype html>
 <html>
@@ -31,7 +43,8 @@ $db->connect($config);
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/bootstrap/css/bootstrap-responsive.min.css">
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/font-awesome/css/font-awesome.min.css">
-<!--<link rel="stylesheet" href="<?php echo $global->baseurl ?>css-js/flat.css">-->
+<?php if($userData->theme!=NULL) { ?><link rel="stylesheet" href="<?php echo $global->baseurl ?>css-js/<?php echo $userData->theme; ?>.css"><?php } ?>
+
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>css-js/style.css">
 
 <script src="<?php echo $global->baseurl ?>lib/jquery/jquery-<?php 
@@ -39,25 +52,18 @@ $db->connect($config);
 		echo '1.7.2'; 
 	else 
 		echo '1.10.1'; ?>.min.js"></script>
+        
 <script src="<?php echo $global->baseurl ?>lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="<?php echo $global->baseurl ?>lib/validate/jquery.validate.min.js"></script>
+<script src="<?php echo $global->baseurl ?>lib/menu/tinynav.js"></script>
 <script src="<?php echo $global->baseurl ?>css-js/main.js"></script>
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
 </head>
 
 <body>
-	<?php
-		// user info
-		if( $_SESSION['logged_user'] > 0 ){
-			$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'users', 'method' => PDO::FETCH_OBJ, 'condition' => ' WHERE id = "'.$_SESSION['logged_user'].'"');
-			$db->select($qryArray);
-			$p_userData = $db->result();
-			$userData = $p_userData[0];
-			
-			$p_username = explode("@", $userData->email);
-			$userData->username = strtolower($p_username[0]);
-		}
-		// user info
-				
+	<?php		
 		if( $pageURL != NULL ){
 			if( file_exists($comDirIndex) ){
 				if($route['component']=='authentication') include($comDirIndex);
@@ -75,6 +81,7 @@ $db->connect($config);
 			else echo redirect($global->baseurl.'authentication/signin/',0,true);
 		}
 	?>
+
 </body>
 </html>
 <?php

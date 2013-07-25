@@ -185,6 +185,13 @@ defined("deliver") or die("Restriced Access");
 		};
 		$('#description').elrte(opts);
 		
+		if(BrowserDetect.browser == 'Firefox'){
+			$('iframe').contents().blur(function(){ 
+				var content = $('.el-rte-structure', this).html();
+				$('#description').val(content);
+			});
+		}
+		
 		$("#category").select2();
 		<?php
 			$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'tags', 'field' => array('tags'), 'method' => PDO::FETCH_OBJ);

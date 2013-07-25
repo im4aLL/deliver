@@ -90,6 +90,9 @@ if( isset($array['kn_wiki']) ){
 			}
 			// tags
 			
+			// adding reputation
+			$db->insert($config['tbl_prefix'].'reputation', array('rep'=>$global->rep_add_new_kn, 'to_user_id'=>$userData->id, 'from_user_id'=> -1, 'for_kn_id'=>$inserted['insertedId']), array('to_user_id', 'for_kn_id', 'from_user_id'));
+			
 			$_SESSION['msg']['main'] = 'Thank you for submit article into knowledge base!';
 			$_SESSION['msg']['more'] = 'An administrator must approve this article, Before appears to knowledge base. It may take up to 1-2 business day(s).';
 			$_SESSION['msg']['rurl'] = $comURL;

@@ -24,6 +24,17 @@ defined("deliver") or die("Restriced Access");
     <form action="" method="post" class="form-horizontal" id="kn_wiki_frm">
         
         <div class="control-group">
+            <label class="control-label" for="project">Project</label>
+            <div class="controls">
+                <select name="project" id="project">
+                	<option value="">Select a project</option>
+                	<option value="occ">OCC</option>
+                    <option value="hillspet">HillsPet</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="control-group">
             <label class="control-label" for="category">Category</label>
             <div class="controls">
                 <select name="category" id="category">
@@ -106,6 +117,9 @@ defined("deliver") or die("Restriced Access");
 	
 		$("#kn_wiki_frm").validate({
 			rules: {
+				project: {
+					required: true
+				},
 				new_category: {
 					required: true,
 					remote: "<?php echo $global->baseurl.$comDir ?>_ajax.check.duplicate.category.php"	
@@ -119,6 +133,9 @@ defined("deliver") or die("Restriced Access");
 				}
 			},
 			messages: {
+				project: {
+					required: "Please select a project"
+				},
 				new_category: {
 					required: "Please enter a category name",
 					remote: "Please, try different category name"	
@@ -185,7 +202,14 @@ defined("deliver") or die("Restriced Access");
 		};
 		$('#description').elrte(opts);
 		
-		$("#category").select2();
+		if(BrowserDetect.browser == 'Firefox'){
+			$('iframe').contents().blur(function(){ 
+				var content = $('.el-rte-structure', this).html();
+				$('#description').val(content);
+			});
+		}
+		
+		$("#category, #project").select2();
 		<?php
 			$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'tags', 'field' => array('tags'), 'method' => PDO::FETCH_OBJ);
 			$db->select($qryArray);

@@ -36,7 +36,7 @@ defined("deliver") or die("Restriced Access");
 				?>
                 <div class="row" id="comment-<?php echo $row->id; ?>">
                     <div class="span2">
-                        <div class="pinfo">
+                        <div class="pinfo visible-desktop">
                             <?php 
                                 echo '<img src="'.$global->baseurl.'images/users/r_thumb_'.$row->avatar.'" alt="'.$row->name.'" class="img-circle">'; 
                             ?>
@@ -48,6 +48,7 @@ defined("deliver") or die("Restriced Access");
 							<div class="info">
                             	<span class="left_arrow"></span>
                             	<span class="author_name"><?php echo '<a href="'.getProfileUrl($row->email).'" target="_blank">'.$row->name.'</a>'; ?></span>
+                                <span class="author_rep"><i class="icon-star"></i><?php echo get_rep($row->commenter_id); ?></span>
                             	
                                 <span class="added_time muted"><small>
 									<?php 
@@ -173,6 +174,7 @@ defined("deliver") or die("Restriced Access");
 			});
 			
 			request.done(function(msg) {
+				old_comment = null;
 				$('#cancle_update_comment').click();
 				is_changed = false;
 			});

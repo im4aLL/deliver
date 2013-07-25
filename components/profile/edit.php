@@ -85,6 +85,35 @@ defined("deliver") or die("Restriced Access");
                         <input type="text" id="skype" placeholder="ID without @skype.com" name="skype" value="<?php echo $profileInfo->skype ?>">
                     </div>
                 </div>
+                
+                <?php $designationArray = array('junior-web-developer', 'web-developer', 'senior-web-developer', 'junior-qa-engineer', 'qa-engineer', 'senior-qa-engineer', 'junior-project-manager', 'project-manager', 'senior-project-manager', 'team-leader', 'unknown'); ?>
+                <div class="control-group">
+                    <label class="control-label" for="designation">Designation</label>
+                    <div class="controls">
+                        <select name="designation" id="designation">
+                        	<option value=""></option>
+                            <?php
+                            	foreach($designationArray as $deg){
+									echo '<option value="'.$deg.'"'.(($deg==$profileInfo->designation)?' selected="selected"':'').'>'.ucwords(str_replace('-',' ', $deg)).'</option>';	
+								}
+							?>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label" for="theme">Theme</label>
+                    <div class="controls">
+                        <select name="theme" id="theme">
+                        	<option value="">Default</option>
+                            <?php
+                            	foreach($global->theme as $theme){
+									echo '<option value="'.$theme.'"'.(($theme==$profileInfo->theme)?' selected="selected"':'').'>'.ucwords(str_replace('-',' ', $theme)).'</option>';	
+								}
+							?>
+                        </select>
+                    </div>
+                </div>
                 <!---->
             
             </div>

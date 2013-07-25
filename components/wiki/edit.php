@@ -33,6 +33,17 @@ defined("deliver") or die("Restriced Access");
 	?>
     
     <form action="" method="post" class="form-horizontal" id="update_kn_wiki_frm">
+    
+    	<div class="control-group">
+            <label class="control-label" for="project">Project</label>
+            <div class="controls">
+                <select name="project" id="project">
+                	<option value="">Select a project</option>
+                	<option value="occ">OCC</option>
+                    <option value="hillspet">HillsPet</option>
+                </select>
+            </div>
+        </div>
         
         <div class="control-group">
             <label class="control-label" for="category">Category</label>
@@ -81,7 +92,7 @@ defined("deliver") or die("Restriced Access");
         <div class="control-group">
             <label class="control-label" for="modify_reason">Modify reason</label>
             <div class="controls">
-            	<input type="text" id="modify_reason" placeholder="Small brief of modification reason" class="input-block-level" name="modify_reason" data-provide="typeahead" data-items="4" data-source='["updated description", "updated tags", "Category updated", "title updated", "added more description"]' autocomplete="off">
+            	<input type="text" id="modify_reason" placeholder="Small brief of modification reason" class="input-block-level" name="modify_reason" data-provide="typeahead" data-items="4" data-source='["updated description", "updated tags", "Category updated", "title updated", "added more description", "updated project name"]' autocomplete="off">
             </div>
         </div>
     
@@ -94,6 +105,8 @@ defined("deliver") or die("Restriced Access");
 
 <script>
 	$(document).ready(function(){
+		
+		$("#project option[value='<?php echo $origData->project ?>']").attr('selected', 'selected');
 		
 		$('.new_cat').hide();
 		$('#category').change(function(){
@@ -125,6 +138,9 @@ defined("deliver") or die("Restriced Access");
 	
 		$("#update_kn_wiki_frm").validate({
 			rules: {
+				project: {
+					required: true
+				},
 				new_category: {
 					required: true,
 					remote: "<?php echo $global->baseurl.$comDir ?>_ajax.check.duplicate.category.php"	
@@ -141,6 +157,9 @@ defined("deliver") or die("Restriced Access");
 				}
 			},
 			messages: {
+				project: {
+					required: "Please select a project"
+				},
 				new_category: {
 					required: "Please enter a category name",
 					remote: "Please, try different category name"	
@@ -233,7 +252,7 @@ defined("deliver") or die("Restriced Access");
 		};
 		$('#description').elrte(opts);
 		
-		$("#category").select2();
+		$("#category, #project").select2();
 		<?php
 			$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'tags', 'field' => array('id, tags'), 'method' => PDO::FETCH_OBJ);
 			$db->select($qryArray);

@@ -102,7 +102,7 @@ if( isset($_POST['update_info']) ){
 			$_SESSION['msg']['rurl'] = $comURL.$updated_email_url.'/';
 			include($global->comFolder.'/redirect/success.php');
 			
-			SendMail( $updated_email, 'Account information updated!', 'Hi '.$array['name'].',<br /><br />Your account information is updated!<br /><br /><a href="'.$comURL.$updated_email_url.'/'.'">'.$comURL.$updated_email_url.'/'.'</a><br /><br />Thanks<br />'.$global->teamName.' Team' );
+			//SendMail( $updated_email, 'Account information updated!', 'Hi '.$array['name'].',<br /><br />Your account information is updated!<br /><br /><a href="'.$comURL.$updated_email_url.'/'.'">'.$comURL.$updated_email_url.'/'.'</a><br /><br />Thanks<br />'.$global->teamName.' Team' );
 			
 		}
 		else {

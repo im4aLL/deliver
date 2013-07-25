@@ -23,7 +23,7 @@ defined("deliver") or die("Restriced Access");
 			<?php echo '<h2 class="no-mp"><a href="'.$comURL.'"><i class="'.$globalMenu['knowledgebase']['icon'].'"></i> '.$globalMenu['knowledgebase']['name'].'</a></h2>'; ?>
         
         </div>
-        <div class="pull-right">
+        <div class="pull-right visible-desktop">
         
             <div class="text-right">   
                 <form>
@@ -53,7 +53,9 @@ defined("deliver") or die("Restriced Access");
             </div>
             
         </div>
-	</div> 
+	</div>
+    
+    <hr>
     
     <div class="article">   
 		<?php
@@ -68,11 +70,12 @@ defined("deliver") or die("Restriced Access");
 				
 				echo '<div class="row">';
 					
-					echo '<div class="span2 text-right art-info">';
+					echo '<div class="span2 text-right art-info visible-desktop">';
 						echo '<div class="profile-img"><img src="'.$global->baseurl.'images/users/r_thumb_'.$single->avatar.'" alt="'.$single->name.'" class="img-circle"></div>';
 						echo '<div class="author"><a href="'.getProfileUrl($single->email).'" target="_blank" class="muted"><strong>'.$single->name.'</strong></a></div>';
+						echo '<div class="reputation" title="Reputation"><i class="icon-star"></i> '.get_rep($single->author_id).'</div>';
 						echo '<div class="member_since muted">member since '.ago(strtotime($single->member_since)).'</div>';
-						echo '<div class="author_deg">'.$single->designation.'</div>';
+						echo '<div class="author_deg">'.str_replace('-', ' ',$single->designation).'</div>';
 						
 						echo '<div class="additional-info">';
 						echo '<a href="'.$comURL.'?keyword='.$single->category.'&in=tags">@'.ucwords($single->category).'</a> / ';
@@ -92,6 +95,7 @@ defined("deliver") or die("Restriced Access");
 						
 						echo '<div class="art-description">';
 							echo '<h1 class="art-title">'.$single->title.'</h1>';
+							echo '<div class="art-author-info hidden-desktop">by <a href="'.getProfileUrl($single->email).'" target="_blank" class="muted"><strong>'.$single->name.'</strong></a> added '.date("jS F, Y", strtotime($single->created_at)).'</div>';
 							echo html_decode($single->description);
 							
 							if($single->modified_at!='0000-00-00'){
@@ -118,7 +122,7 @@ defined("deliver") or die("Restriced Access");
 							return false;
 						}
 						$is_helpful_current_user = is_helpful_current_user($db->result());
-						$jsonString = encode(json_encode(array('rep'=>$global->rep_wiki, 'to_user_id'=>$single->author_id, 'for_kn_id'=>$single->id, 'from_user_id'=> $userData->id)));
+						$jsonString = encode(json_encode(array('rep'=>$global->rep_kn, 'to_user_id'=>$single->author_id, 'for_kn_id'=>$single->id, 'from_user_id'=> $userData->id)));
 						
 						echo '<div class="pull-left '.(($is_helpful_current_user)?'hide':'').' make_helpful_block">
 						<strong class="mark_as_helpful">Did you find this helpful?</strong> 
@@ -267,6 +271,7 @@ defined("deliver") or die("Restriced Access");
 			
 			return false;	
 		});
+		
 		
 	});
 </script>
