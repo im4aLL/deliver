@@ -289,6 +289,20 @@ a.helpful { font-weight:bold; }
 
 .reputation { font-weight:bold }
 
+/* #Process
+==========================================*/
+.process { overflow:hidden; height:100% }
+.process img { position:absolute; top:43px; left:0px; }
+.over-hide { overflow:hidden; background-color:#FFF }
+.fixed_at_bottom { position:fixed; bottom:2%; z-index:10; width:100%; left:5% }
+.fixed_at_bottom p { display:inline-block; margin-right:10px }
+.smooth {
+-webkit-transition: all 500ms ease-in-out;
+  -moz-transition: all 500ms ease-in-out;
+  -o-transition: all 500ms ease-in-out;
+  transition: all 500ms ease-in-out;	
+}
+
 /* #Media Queries
 ================================================== */
  
@@ -297,6 +311,8 @@ a.helpful { font-weight:bold; }
 	.comments .user_comments { background:none }
 	.well a.make_helpful_block { display:none }
 	.art-info { display:inline-block; }
+	
+	.process img { position:static }
 }
 
 /* Tablet Portrait size to standard 960 (devices and browsers) */

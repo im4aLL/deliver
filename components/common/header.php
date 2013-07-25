@@ -26,7 +26,7 @@ $globalMenu = array(
 							'addwiki' => array('name'=>'New post', 'icon'=>'icon-plus-sign-alt', 'link' => $global->baseurl.'knowledgebase/new/' )
 						) 
 					),
-	'process' => array('name'=>'Process', 'icon'=>'icon-random', 'link' => '#' ),
+	'process' => array('name'=>'Process', 'icon'=>'icon-random', 'link' => $global->baseurl.'process/' ),
 	'team' => array('name'=>'Team', 'icon'=>'icon-group', 'link' => '#' ),
 	'profile' => array('name'=>'Account', 'icon'=>'icon-cogs', 'link' => $global->baseurl.'profile/'.$userData->username.'/', 
 						'dropdown' => array(
