@@ -523,3 +523,5 @@ a.thumbnail:focus {
      -moz-border-radius: 2px;
           border-radius: 2px;
 }
+
+.team .info { background: rgba(63,147,147, 0.8); }

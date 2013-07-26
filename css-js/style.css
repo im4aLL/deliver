@@ -294,7 +294,7 @@ a.helpful { font-weight:bold; }
 .process { overflow:hidden; height:100% }
 .process img { position:absolute; top:43px; left:0px; }
 .over-hide { overflow:hidden; background-color:#FFF }
-.fixed_at_bottom { position:fixed; bottom:2%; z-index:10; width:100%; left:5% }
+.fixed_at_bottom { position:fixed; bottom:1%; z-index:10; width:100%; text-align:center}
 .fixed_at_bottom p { display:inline-block; margin-right:10px }
 .smooth {
 -webkit-transition: all 500ms ease-in-out;
@@ -302,6 +302,130 @@ a.helpful { font-weight:bold; }
   -o-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;	
 }
+.fixed_centered { position:absolute; top:50%; left:50%; width:100%; height:100%; margin-left:-80px; margin-top:-12px }
+
+.process_menu .btn-group { position:absolute; z-index:10; top:65px; right:27px; }
+.process_menu .btn-group.controlgrp { margin-top:50px }
+.btn [class^="icon-"]:before, .moderation_menu [class*=" icon-"]:before { cursor:pointer }
+
+
+
+.item {
+	width: 100%;
+	height: 100%;
+	height: 270px;
+	width:270px;
+	border-radius: 50%;
+	position: relative;
+	cursor: default;
+	box-shadow: 
+		inset 0 0 0 16px rgba(0,0,0,0.2),
+		0 1px 2px rgba(0,0,0,0.1);
+		
+	-webkit-transition: all 0.4s ease-in-out;
+	-moz-transition: all 0.4s ease-in-out;
+	-o-transition: all 0.4s ease-in-out;
+	-ms-transition: all 0.4s ease-in-out;
+	transition: all 0.4s ease-in-out;
+	background-repeat:no-repeat;
+	background-position:center top;
+	overflow:hidden;
+	margin-bottom:20px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.team .info {
+	position: absolute;
+	background: rgba(40,160,210, 0.8);
+	width: inherit;
+	height: inherit;
+	border-radius: 50%;
+	opacity: 0;
+	
+	-webkit-transition: all 0.4s ease-in-out;
+	-moz-transition: all 0.4s ease-in-out;
+	-o-transition: all 0.4s ease-in-out;
+	-ms-transition: all 0.4s ease-in-out;
+	transition: all 0.4s ease-in-out;
+	
+	-webkit-transform: scale(0);
+	-moz-transform: scale(0);
+	-o-transform: scale(0);
+	-ms-transform: scale(0);
+	transform: scale(0);
+	
+	-webkit-backface-visibility: hidden;
+
+}
+
+.team .info h3 {
+	color: #fff;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font-size: 22px;
+	margin: 110px 30px 5px 30px;
+	padding: 45px 0 0 0;
+	text-shadow: 
+		0 0 1px #fff, 
+		0 1px 2px rgba(0,0,0,0.3);
+	font-weight: normal;
+	text-align:center
+}
+
+.team .info p {
+	color: #fff;
+	text-align:center;
+	border-top: 1px solid rgba(255,255,255,0.5);
+	opacity: 0;
+	-webkit-transition: all 1s ease-in-out 0.4s;
+	-moz-transition: all 1s ease-in-out 0.4s;
+	-o-transition: all 1s ease-in-out 0.4s;
+	-ms-transition: all 1s ease-in-out 0.4s;
+	transition: all 1s ease-in-out 0.4s;
+	padding-top:5px;
+
+}
+
+.team .info p span { font-size:12px }
+
+.team .info p a {
+	display: inline-block;
+	color: #fff;
+	color: rgba(255,255,255,0.7);
+	font-style: normal;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	padding-top: 4px;
+}
+
+.team .info p a [class^="icon-"]:before, .moderation_menu [class*=" icon-"]:before { cursor:pointer }
+
+.team .info p a:hover {
+	color: #fff222;
+	color: rgba(255,242,34, 0.8);
+	text-decoration:none
+}
+
+.item:hover {
+	box-shadow: 
+		inset 0 0 0 1px rgba(255,255,255,0.1),
+		0 1px 2px rgba(0,0,0,0.1);
+}
+.item:hover .info {
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-o-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	opacity: 1;
+}
+
+.item:hover .info p {
+	opacity: 1;
+}
+
 
 /* #Media Queries
 ================================================== */
@@ -324,6 +448,8 @@ a.helpful { font-weight:bold; }
     .navbar .nav { display: none }
 	
 	.wiki .nav { margin-bottom:20px }
+	
+	
 }
 
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */

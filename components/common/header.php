@@ -27,7 +27,7 @@ $globalMenu = array(
 						) 
 					),
 	'process' => array('name'=>'Process', 'icon'=>'icon-random', 'link' => $global->baseurl.'process/' ),
-	'team' => array('name'=>'Team', 'icon'=>'icon-group', 'link' => '#' ),
+	'team' => array('name'=>'Team', 'icon'=>'icon-group', 'link' => $global->baseurl.'team/' ),
 	'profile' => array('name'=>'Account', 'icon'=>'icon-cogs', 'link' => $global->baseurl.'profile/'.$userData->username.'/', 
 						'dropdown' => array(
 							'changepass' => array('name'=>'Change password', 'icon'=>'icon-edit-sign', 'link' => $global->baseurl.'profile/change-password/' ),

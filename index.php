@@ -43,9 +43,9 @@ if( $_SESSION['logged_user'] > 0 ){
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/bootstrap/css/bootstrap-responsive.min.css">
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/font-awesome/css/font-awesome.min.css">
-<?php if($userData->theme!=NULL) { ?><link rel="stylesheet" href="<?php echo $global->baseurl ?>css-js/<?php echo $userData->theme; ?>.css"><?php } ?>
-
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>css-js/style.css">
+<?php if(isset($userData->theme) && $userData->theme!=NULL && $userData->theme!='flagged') { ?><link rel="stylesheet" href="<?php echo $global->baseurl ?>css-js/<?php echo $userData->theme; ?>.css"><?php } ?>
+
 
 <script src="<?php echo $global->baseurl ?>lib/jquery/jquery-<?php 
 	if(($route['component']=='wiki' || $route['component']=='knowledgebase') && ($route['view']=='new' || $route['view']=='edit' )) 
