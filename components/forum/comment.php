@@ -24,7 +24,7 @@ defined("deliver") or die("Restriced Access");
 						GROUP_CONCAT( d.email, "::", d.name, "::", IF(c.rep>0,"up","down") ) as voted_users
 						FROM '.$config['tbl_prefix'].'comments as a 
 							LEFT JOIN '.$config['tbl_prefix'].'users as b ON b.id = a.by_user_id
-							LEFT JOIN '.$config['tbl_prefix'].'reputation as c ON c.for_comment_id = a.id
+							LEFT JOIN '.$config['tbl_prefix'].'reputation as c ON c.for_comment_id = a.id AND c.from_user_id != -1
 							LEFT JOIN '.$config['tbl_prefix'].'users as d ON d.id = c.from_user_id
 						WHERE a.to_id = "'.$single->id.'"
 						GROUP BY a.id');
@@ -68,13 +68,15 @@ defined("deliver") or die("Restriced Access");
                             <div class="commit">
 								<span class="full_commit" data-id="<?php if( ($userData->id == $row->commenter_id) || $userData->usergroup=='Administrator' ) echo $row->id; else echo '0'; ?>"><?php echo html_decode($row->comment); ?></span>
                                 <?php
-									$jsonString = encode(json_encode(array('rep'=>$global->rep_comment_up, 'to_user_id'=>$row->commenter_id, 'for_comment_id'=>$row->id, 'from_user_id'=> $userData->id)));
-									$jsonString2 = encode(json_encode(array('rep'=>$global->rep_comment_down, 'to_user_id'=>$row->commenter_id, 'for_comment_id'=>$row->id, 'from_user_id'=> $userData->id)));
+                                	if( $userData->id != $row->commenter_id ) {
+										$jsonString = encode(json_encode(array('rep'=>$global->rep_comment_up, 'to_user_id'=>$row->commenter_id, 'for_comment_id'=>$row->id, 'from_user_id'=> $userData->id)));
+										$jsonString2 = encode(json_encode(array('rep'=>$global->rep_comment_down, 'to_user_id'=>$row->commenter_id, 'for_comment_id'=>$row->id, 'from_user_id'=> $userData->id)));
 								?>
                             	<span class="action_buttons">
                                 	<a href="javascript:void(0)" class="up_vote<?php if($row->up_vote>0) echo ' added'; ?>" rel="<?php echo $jsonString; ?>"><i class="icon-thumbs-up"></i> <span><?php echo $row->up_vote; ?></span></a>
                                 	<a href="javascript:void(0)" class="down_vote<?php if($row->down_vote>0) echo ' added'; ?>" rel="<?php echo $jsonString2; ?>@@no"><i class="icon-thumbs-down"></i> <span><?php echo $row->down_vote; ?></span></a> 
                                 </span>
+                                <?php } ?>
                                 
                                 <?php
 									if($row->voted_users!=NULL){
@@ -203,6 +205,7 @@ defined("deliver") or die("Restriced Access");
 				if(msg=='true'){
 					elem.children('span').text(parseInt(counted)+1);	
 				}
+				else elem.removeClass('added');
 			});
 			
 			return false;	

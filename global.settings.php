@@ -13,40 +13,40 @@
 */
 date_default_timezone_set('Asia/Dhaka');
 
-$global = new StdClass;
+$global                   = new StdClass;
 
-$global->baseurl = 'http://localhost/deliver/';
-$global->pageTitle = 'Deliver Wiki';
-$global->comFolder = 'components'; 
+$global->baseurl          = 'http://localhost/deliver/';
+$global->pageTitle        = 'Hogarth Wiki';
+$global->comFolder        = 'components'; 
 
-$global->teamName = 'Deliver';
+$global->teamName         = 'Hogarth Dhaka';
 
-$global->rowPerPage = 25;
+$global->rowPerPage       = 25;
 
-$global->smtp_host = 'smtp.gmail.com';
-$global->smtp_secure = 'ssl';
-$global->smtp_port = 465;
-$global->smtp_username = 'hadi.graphicpeople@gmail.com';
-$global->smtp_password = '';
-$global->smtp_from = 'no-reply@graphicpeoplestudio.com';
-$global->smtp_from_name = $global->teamName.' team';
+$global->smtp_host        = 'smtp.gmail.com';
+$global->smtp_secure      = 'ssl';
+$global->smtp_port        = 465;
+$global->smtp_username    = 'hogarthwiki@gmail.com';
+$global->smtp_password    = 'graphicPeople#2013';
+$global->smtp_from        = 'no-reply@graphicpeoplestudio.com';
+$global->smtp_from_name   = $global->teamName.' team';
 
 $global->nofication_email = 'eyes_rainning@hotmail.com';
-$global->contact_email = 'Al.Hadi@adpeople.com';
+$global->contact_email    = 'Al.Hadi@adpeople.com';
 
-$global->bug_report = 'Al.Hadi@adpeople.com';
-$global->version = '1.0.0';
-$global->copyright = '&copy; '.date("Y").' to GraphicPeople ('.$global->teamName.' team)';
-$global->last_updated = '25/7/2013 at 11:50 AM by '.$global->bug_report;
+$global->bug_report       = 'Al.Hadi@adpeople.com';
+$global->version          = '1.0.1';
+$global->copyright        = '&copy; '.date("Y").' to GraphicPeople ('.$global->teamName.' team)';
+$global->last_updated     = '06/11/2013 at 9:50 PM by '.$global->bug_report;
 
-$global->rep_wiki = 30;
-$global->rep_kn = 20;
-$global->rep_kn_to_wiki = 20;
-$global->rep_comment = 2;
-$global->rep_comment_up = 5;
+$global->rep_wiki         = 30;
+$global->rep_kn           = 20;
+$global->rep_kn_to_wiki   = 20;
+$global->rep_comment      = 2;
+$global->rep_comment_up   = 5;
 $global->rep_comment_down = -5;
 $global->rep_add_new_wiki = 50;
-$global->rep_add_new_kn = 30;
+$global->rep_add_new_kn   = 30;
 
 /*
 * Administrator - Can do any thing
@@ -54,10 +54,14 @@ $global->rep_add_new_kn = 30;
 * Moderator - Can approve and add, edit post but can't delete
 * Member - Can add article but will be awaiting for moderation
 */
-$global->usergroup = array("Administrator", "Author", "Moderator", "Member");
+$global->usergroup     = array("Administrator", "Author", "Moderator", "Member");
 
-/*
-* Theme
-*/
-$global->theme = array('flat');
+$global->theme         = array('flat');
+$global->debugMode     = true;
+$global->approvalValue = 1; // 1 = auto approval, 0 = administrator need to approve
+
+// make sure its one word with no space
+$global->brands = array(
+	'OCC', 'HillsPet', 'Other'
+	);
 ?>

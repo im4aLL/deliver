@@ -52,6 +52,8 @@ if( isset($array['register']) ){
 		$array['created_at'] = date("Y-m-d");
 		$array['temp_code'] = md5(time());
 		$array['designation'] = 'unknown';
+		$array['avatar'] = 'default.jpg';
+		$array['usergroup'] = 'Author';
 		
 		$inserted = $db->insert($_this->tableName, $array, array('email'));
 		

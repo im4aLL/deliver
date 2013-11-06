@@ -48,7 +48,7 @@ if( $_SESSION['logged_user'] > 0 ){
 
 
 <script src="<?php echo $global->baseurl ?>lib/jquery/jquery-<?php 
-	if(($route['component']=='wiki' || $route['component']=='knowledgebase') && ($route['view']=='new' || $route['view']=='edit' )) 
+	if( (isset($route['component']) || isset($route['view']) ) && ($route['component']=='docs' || $route['component']=='forum') && ($route['view']=='new' || $route['view']=='edit' )) 
 		echo '1.7.2'; 
 	else 
 		echo '1.10.1'; ?>.min.js"></script>
@@ -63,7 +63,7 @@ if( $_SESSION['logged_user'] > 0 ){
 </head>
 
 <body>
-	<?php		
+	<?php
 		if( $pageURL != NULL ){
 			if( file_exists($comDirIndex) ){
 				if($route['component']=='authentication') include($comDirIndex);

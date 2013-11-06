@@ -38,7 +38,7 @@ defined("deliver") or die("Restriced Access");
     
     <div class="row profile_info">
     	<div class="span3">
-        	<div class="thumbnail"><img src="<?php echo $global->baseurl ?>images/users/<?php if($profileInfo->avatar!=NULL) echo 'r_'.$profileInfo->avatar; else echo 'default.jpg'; ?>" alt="<?php echo $profileInfo->name; ?>"></div>
+        	<div class="thumbnail"><img src="<?php echo $global->baseurl ?>images/users/<?php if($profileInfo->avatar!=NULL && $profileInfo->avatar!='default.jpg') echo 'r_'.$profileInfo->avatar; else echo 'default.jpg'; ?>" alt="<?php echo $profileInfo->name; ?>"></div>
         </div>
         <div class="span9">
             <dl class="dl-horizontal">
@@ -86,7 +86,7 @@ defined("deliver") or die("Restriced Access");
     <ul class="nav nav-tabs" id="activity">
         <li class="active"><a href="#reputation">Reputation</a></li>
         <li><a href="#comment">Comment</a></li>
-        <li><a href="#kbasenwiki">Knowledge base and wiki</a></li>
+        <li><a href="#kbasenwiki">Docs and discussions</a></li>
     </ul>
     
     <div class="tab-content">

@@ -42,10 +42,10 @@ defined("deliver") or die("Restriced Access");
 			}
 			elseif( $keyword!=NULL && $in!=NULL ){
 				if($in=='all'){
-					$searchString = "a.title LIKE '".$keyword."%'";	
+					$searchString = "a.title LIKE '%".$keyword."%'";	
 				}
 				else {
-					$searchString = "a.title LIKE '".$keyword."%' AND a.category = '".$in."'";		
+					$searchString = "a.title LIKE '%".$keyword."%' AND a.category = '".$in."'";		
 				}
 			}
 			
@@ -87,6 +87,7 @@ defined("deliver") or die("Restriced Access");
 		if($keyword!=NULL && $searchString==NULL) echo '<div class="alert"><strong>Search result:</strong> Sorry! no wiki found with desired keyword(s).</div>';
 		else 
 			{
+
 				$db->query("SELECT a.title
 							FROM ".$_this->tableName." as a 
 							WHERE a.type='kbase' ".(($searchString)?' AND ('.$searchString.') ':'')." ");
@@ -103,7 +104,7 @@ defined("deliver") or die("Restriced Access");
 				$paginator->class_page = 'pagination';
 				$paginator->class_button = 'btn btn-small';
 				$paginator->class_active = 'btn-inverse';
-				
+
 				$db->query("SELECT a.title, a.url, a.created_at, a.category, a.hit, b.name, b.email
 							FROM ".$_this->tableName." as a 
 							LEFT JOIN

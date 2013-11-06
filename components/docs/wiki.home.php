@@ -34,10 +34,10 @@ if($keyword!=NULL && $in=='tags'){
 }
 elseif( $keyword!=NULL && $in!=NULL ){
 	if($in=='all'){
-		$searchString = "a.title LIKE '".$keyword."%'";	
+		$searchString = "a.title LIKE '%".$keyword."%'";	
 	}
 	else {
-		$searchString = "a.title LIKE '".$keyword."%' AND a.category = '".$in."'";		
+		$searchString = "a.title LIKE '%".$keyword."%' AND a.category = '".$in."'";		
 	}
 }
 
@@ -121,7 +121,7 @@ if(!isset($searchString)) $searchString = NULL;
 					
 				}
 				elseif($keyword!=NULL) echo '<div class="alert"><strong>Search result:</strong> Sorry! no result with desired keyword(s).</div>';
-				else echo '<div class="alert"><strong>Sorry!</strong> no wiki found.</div>';	
+				else echo '<div class="alert"><strong>Sorry!</strong> no docs found.</div>';	
 			}
 	?>
 	

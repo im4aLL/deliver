@@ -14,16 +14,16 @@
 defined("deliver") or die("Restriced Access");
 
 $globalMenu = array(
-	'wiki' => array('name'=>'Wiki', 'icon'=>'icon-book', 'link' => $global->baseurl.'wiki/',
+	'wiki' => array('name'=>'Docs', 'icon'=>'icon-book', 'link' => $global->baseurl.'docs/',
 						'dropdown' => array(
-							'listwiki' => array('name'=>'Browse All', 'icon'=>'icon-tasks', 'link' => $global->baseurl.'wiki/' ),
-							'addwiki' => array('name'=>'Add new wiki', 'icon'=>'icon-plus-sign-alt', 'link' => $global->baseurl.'wiki/new/' )
+							0 => array('name'=>'Browse All', 'icon'=>'icon-tasks', 'link' => $global->baseurl.'docs/' ),
+							1 => array('name'=>'Add new doc', 'icon'=>'icon-plus-sign-alt', 'link' => $global->baseurl.'docs/new/' )
 						) 
 					),
-	'knowledgebase' => array('name'=>'Knowledge base', 'icon'=>'icon-beaker', 'link' => $global->baseurl.'knowledgebase/',
+	'knowledgebase' => array('name'=>'Forum', 'icon'=>'icon-comments', 'link' => $global->baseurl.'forum/',
 						'dropdown' => array(
-							'listwiki' => array('name'=>'Browse All', 'icon'=>'icon-tasks', 'link' => $global->baseurl.'knowledgebase/' ),
-							'addwiki' => array('name'=>'New post', 'icon'=>'icon-plus-sign-alt', 'link' => $global->baseurl.'knowledgebase/new/' )
+							0 => array('name'=>'Browse All', 'icon'=>'icon-tasks', 'link' => $global->baseurl.'forum/' ),
+							1 => array('name'=>'New post', 'icon'=>'icon-plus-sign-alt', 'link' => $global->baseurl.'forum/new/' )
 						) 
 					),
 	'process' => array('name'=>'Process', 'icon'=>'icon-random', 'link' => $global->baseurl.'process/' ),
@@ -42,7 +42,7 @@ $globalMenu = array(
         
         <div class="navbar-inner">
             <div class="container">
-                <a class="brand" href="<?php echo $global->baseurl ?>home/"><?php echo $global->teamName ?> team</a>
+                <a class="brand" href="<?php echo $global->baseurl ?>home/"><?php echo $global->teamName ?></a>
                 <?php echo genMenu($globalMenu, 'nav pull-right', $route['component']); ?>
             </div>
         </div>

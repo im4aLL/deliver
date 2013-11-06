@@ -24,8 +24,8 @@ defined("deliver") or die("Restriced Access");
         	<!--activity-->
             <ul class="nav nav-tabs" id="activity">
                 <li class="active"><a href="#reputation">Reputation</a></li>
-                <li><a href="#comment">Comment</a></li>
-                <li><a href="#kbasenwiki">Knowledge base and wiki</a></li>
+                <li><a href="#comment">Comments</a></li>
+                <li><a href="#kbasenwiki">Docs and Discussions</a></li>
             </ul>
             
             <div class="tab-content">
@@ -93,7 +93,7 @@ defined("deliver") or die("Restriced Access");
         
         <div class="span6">
         	<!--latest wiki-->
-            <h2>Latest wiki</h2>
+            <h2>Latest Docs</h2>
             
             <?php
                 $wiki_comURL = $globalMenu['wiki']['link'];
@@ -124,13 +124,13 @@ defined("deliver") or die("Restriced Access");
                         echo '</div>';
                     }
                     
-                    echo '<a href="'.$wiki_comURL.'" class="btn">Browse all wiki</a>';
+                    echo '<a href="'.$wiki_comURL.'" class="btn">Browse all docs</a>';
                 }
             ?>
             <!--latest wiki-->
             <br><br>
             <!--kbase-->
-            <h2>Latest Knowledge base</h2>
+            <h2>Latest Post</h2>
         
 			<?php
                 $wiki_comURL = $globalMenu['knowledgebase']['link'];
@@ -161,7 +161,7 @@ defined("deliver") or die("Restriced Access");
                         echo '</div>';
                     }
                     
-                    echo '<a href="'.$wiki_comURL.'" class="btn">Browse all knowledge base</a>';
+                    echo '<a href="'.$wiki_comURL.'" class="btn">Go to forum</a>';
                 }
             ?>    
             <!--kbase-->

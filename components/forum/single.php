@@ -111,7 +111,7 @@ defined("deliver") or die("Restriced Access");
 						$db->query("SELECT a.*, b.email as voter_email, b.name as voter_name
 									FROM ".$config['tbl_prefix']."reputation as a
 										LEFT JOIN ".$config['tbl_prefix']."users as b ON b.id = a.from_user_id
-									WHERE a.for_kn_id = '$single->id'
+									WHERE a.for_kn_id = '$single->id' AND a.from_user_id != -1
 									GROUP BY a.id");
 						
 						function is_helpful_current_user($array){

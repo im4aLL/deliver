@@ -31,7 +31,7 @@ if( isset($array['kn_wiki']) ){
 	// checking for error
 	$errorList = array();
 	
-	if($array['category']=='flagged') $errorList[] = 'Invalid category name!';
+	if($array['category']=='flagged') $errorList[] = 'Invalid brand name!';
 	if($array['title']=='flagged') $errorList[] = 'Please enter a valid title';	
 	if(trim($array['description'])==NULL) $errorList[] = 'Please write something in description';	
 	// checking for error
@@ -50,7 +50,7 @@ if( isset($array['kn_wiki']) ){
 		$array['category'] = strtolower($array['category']);
 		$array['url'] = genUrl($array['title']);
 		$array['created_at'] = date("Y-m-d");
-		$array['state'] = 0;
+		$array['state'] = $global->approvalValue;
 		$array['by_id'] = $userData->id;
 		$array['type'] = 'kbase';
 		
@@ -93,17 +93,17 @@ if( isset($array['kn_wiki']) ){
 			// adding reputation
 			$db->insert($config['tbl_prefix'].'reputation', array('rep'=>$global->rep_add_new_kn, 'to_user_id'=>$userData->id, 'from_user_id'=> -1, 'for_kn_id'=>$inserted['insertedId']), array('to_user_id', 'for_kn_id', 'from_user_id'));
 			
-			$_SESSION['msg']['main'] = 'Thank you for submit article into knowledge base!';
-			$_SESSION['msg']['more'] = 'An administrator must approve this article, Before appears to knowledge base. It may take up to 1-2 business day(s).';
+			$_SESSION['msg']['main'] = 'A new post has been added to forum!';
+			if($global->approvalValue==0) $_SESSION['msg']['more'] = 'An administrator must approve this post, Before appears to knowledge base. It may take up to 1-2 business day(s).';
 			$_SESSION['msg']['rurl'] = $comURL;
 			include($global->comFolder.'/redirect/success.php');
 			
-			//SendMail( $global->nofication_email, 'Wiki: Action required!', "A new article has been submitted to wiki waiting for moderation.<br /><br /><strong>Title:</strong> ".$array['title']."<br /><br />Please go to your account dashboard and approve/disapprove pending submission(s)." );
+			if(!$global->debugMode) SendMail( $global->nofication_email, 'New post added!', "A new thread has been submitted to forum.<br /><br /><strong>Title:</strong> ".$array['title'] );
 		}
 		
 		// if email already exists
 		elseif( $inserted['duplicate'] == true ){
-			$_SESSION['msg']['main'] = 'Sorry, similar type of article is already exists!';
+			$_SESSION['msg']['main'] = 'Sorry, similar type of post is already exists!';
 			$_SESSION['msg']['rurl'] = $comURL.'new/';
 			include($global->comFolder.'/redirect/error.php');	
 		}
@@ -138,7 +138,7 @@ elseif(isset($_POST['update_kn_wiki'])){
 	// checking for error
 	$errorList = array();
 	
-	if($array['category']=='flagged') $errorList[] = 'Invalid category name!';
+	if($array['category']=='flagged') $errorList[] = 'Invalid brand name!';
 	if($array['title']=='flagged') $errorList[] = 'Please enter a valid title';	
 	if($array['modify_reason']=='flagged') $errorList[] = 'You have forget to commit the changes';	
 	if(trim($array['description'])==NULL) $errorList[] = 'Please write something in description';
@@ -200,7 +200,7 @@ elseif(isset($_POST['update_kn_wiki'])){
 			}
 			// tags
 			
-			$_SESSION['msg']['main'] = 'knowledge base has been updated!';
+			$_SESSION['msg']['main'] = 'Thread has been updated!';
 			$_SESSION['msg']['rurl'] = $comURL.'article/'.$comRoute[0].'/';
 			include($global->comFolder.'/redirect/success.php');
 		}

@@ -28,7 +28,7 @@ defined("deliver") or die("Restriced Access");
                 echo '<div class="article_body">';
 				 
                     // edit link
-                    if($userData->id == $single->author_id){
+                    if($userData->id == $single->author_id || $userData->usergroup == 'Administrator'){
                         echo '<a class="pull-right tips" href="'.$comURL.'edit/'.$comRoute[0].'/" data-toggle="tooltip" data-placement="left" title="update this wiki"><small><i class="icon-pencil"></i> edit</small></a>';	
                     }
                     // edit link

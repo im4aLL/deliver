@@ -1,8 +1,8 @@
 <?php
 /*
 * Deliver wiki
-* wiki/new.php
-* 25.06.2013
+* wiki/edit.php
+* 08.07.2013
 *
 * ===========================================
 * @package		1.0
@@ -18,18 +18,30 @@ defined("deliver") or die("Restriced Access");
 <div class="container">
     
     <div class="page-header">
-      <h1>Add new article <small>wiki</small></h1>
+      <h1>Edit article <small>doc</small></h1>
     </div>
     
-    <form action="" method="post" class="form-horizontal" id="kn_wiki_frm">
-        
-        <div class="control-group">
+    <?php		
+		$fetchArray = array( 'tbl_name' => $_this->tableName, 'method' => PDO::FETCH_OBJ, 'condition'=>" WHERE url = '".$comRoute[0]."' AND type = 'wiki'" );
+		$db->select($fetchArray);
+		$origDataResult = $db->result();
+		$origData = $origDataResult[0];
+		
+		/*echo '<pre>';
+		print_r($origData);
+		echo '</pre>';*/
+
+		if($userData->id != $origData->by_id && $userData->usergroup != 'Administrator') die('You don\'t have enough privilege to view this page!');
+	?>
+    
+    <form action="" method="post" class="form-horizontal" id="update_kn_wiki_frm">
+    
+    	<div class="control-group">
             <label class="control-label" for="project">Project</label>
             <div class="controls">
                 <select name="project" id="project">
                 	<option value="">Select a project</option>
-                	<option value="occ">OCC</option>
-                    <option value="hillspet">HillsPet</option>
+                	<?php echo genBrands(); ?>
                 </select>
             </div>
         </div>
@@ -40,13 +52,13 @@ defined("deliver") or die("Restriced Access");
                 <select name="category" id="category">
                 	<option value="uncategorized">Uncategorized</option>
                     <?php
-						$qryArray = array( 'tbl_name' => $_this->tableName, 'field' => array('category'), 'method' => PDO::FETCH_OBJ, 'groupby'=>'category', 'condition' => " WHERE type='wiki'" );
+						$qryArray = array( 'tbl_name' => $_this->tableName, 'field' => array('category'), 'method' => PDO::FETCH_OBJ, 'groupby'=>'category' );
 						$db->select($qryArray);
 						$category = $db->result();
 						
 						if($db->total() > 0){
 							foreach($category as $row){
-								echo '<option value="'.$row->category.'">'.ucwords($row->category).'</option>';	
+								echo '<option value="'.$row->category.'"'.(($origData->category==$row->category)?' selected="selected"':'').'>'.ucwords($row->category).'</option>';	
 							}
 						}
 					?>
@@ -59,14 +71,14 @@ defined("deliver") or die("Restriced Access");
         <div class="control-group">
             <label class="control-label" for="title">Title</label>
             <div class="controls">
-            	<input type="text" id="title" placeholder="Article title here" class="input-xxlarge" name="title">
+            	<input type="text" id="title" placeholder="Article title here" class="input-xxlarge" name="title" value="<?php echo $origData->title ?>">
             </div>
         </div>
         
         <div class="control-group">
             <label class="control-label" for="description">Description</label>
             <div class="controls">
-            	<textarea id="description" name="description"></textarea>
+            	<textarea id="description" name="description"><?php echo $origData->description ?></textarea>
             </div>
         </div>
         
@@ -74,11 +86,19 @@ defined("deliver") or die("Restriced Access");
             <label class="control-label" for="tags">Tags</label>
             <div class="controls">
             	<input type="text" id="tags" placeholder="tags" class="input-xxlarge" name="tags">
+                <button id="revert_tags" class="btn tips" data-toggle="tooltip" title="Revert back to old"><i class="icon-undo"></i></button>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label" for="modify_reason">Modify reason</label>
+            <div class="controls">
+            	<input type="text" id="modify_reason" placeholder="Small brief of modification reason" class="input-block-level" name="modify_reason" data-provide="typeahead" data-items="4" data-source='["updated description", "updated tags", "Category updated", "title updated", "added more description", "updated project name"]' autocomplete="off">
             </div>
         </div>
     
         <div class="form-actions">
-            <button type="submit" name="kn_wiki" class="btn btn-info">Submit</button>
+            <button type="submit" name="update_kn_wiki" class="btn btn-info">Update</button>
         </div>
     </form>
 
@@ -86,6 +106,8 @@ defined("deliver") or die("Restriced Access");
 
 <script>
 	$(document).ready(function(){
+		
+		$("#project option[value='<?php echo $origData->project ?>']").attr('selected', 'selected');
 		
 		$('.new_cat').hide();
 		$('#category').change(function(){
@@ -115,7 +137,7 @@ defined("deliver") or die("Restriced Access");
 			else return false;
 		}, 'Already exists!');*/
 	
-		$("#kn_wiki_frm").validate({
+		$("#update_kn_wiki_frm").validate({
 			rules: {
 				project: {
 					required: true
@@ -126,9 +148,12 @@ defined("deliver") or die("Restriced Access");
 				},
 				title: {
 					required: true,
-					remote: "<?php echo $global->baseurl.$comDir ?>_ajax.check.duplicate.title.php"
+					remote: "<?php echo $global->baseurl.$comDir ?>_ajax.check.duplicate.title.php?url=<?php echo $comRoute[0] ?>"
 				},
 				description: {
+					required: true
+				},
+				modify_reason: {
 					required: true
 				}
 			},
@@ -146,6 +171,9 @@ defined("deliver") or die("Restriced Access");
 				},
 				description: {
 					required: "Please enter brief description"
+				},
+				modify_reason: {
+					required: "Please commit the changes"
 				}
 			},
 			highlight: function(element) {
@@ -180,7 +208,30 @@ defined("deliver") or die("Restriced Access");
 <link rel="stylesheet" href="<?php echo $global->baseurl ?>lib/select2/select2.css">
 <script src="<?php echo $global->baseurl ?>lib/select2/select2.js"></script>
 
+<?php
+	$db->query("SELECT a.tags, a.id FROM ".$config['tbl_prefix']."tags as a 
+				LEFT JOIN
+					".$config['tbl_prefix']."tag_relate as b ON b.tag_id = a.id
+				WHERE
+					b.kw_id = '".$origData->id."'");
+	
+	$pre_tag = array();
+	$pre_tag_text = array();
+	if( $db->total() > 0 ){
+		foreach($db->result() as $row){
+			//$pre_tag[]= '{id: "'.$row->id.'", text: "'.$row->tags.'"}';
+			$pre_tag[]= '{id: "'.$row->tags.'", text: "'.$row->tags.'"}';	
+		}
+	}
+?>
+
 <script>
+
+	function getActualId(text, array){
+		for(var i=0; i<array.length; i++){
+			if(array[i].text==text) return array[i].id;	
+		}
+	}
 
 	$(document).ready(function(){
 		var opts = {
@@ -202,27 +253,47 @@ defined("deliver") or die("Restriced Access");
 		};
 		$('#description').elrte(opts);
 		
-		if(BrowserDetect.browser == 'Firefox'){
-			$('iframe').contents().blur(function(){ 
-				var content = $('.el-rte-structure', this).html();
-				$('#description').val(content);
-			});
-		}
-		
 		$("#category, #project").select2();
 		<?php
-			$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'tags', 'field' => array('tags'), 'method' => PDO::FETCH_OBJ);
+			$qryArray = array( 'tbl_name' => $config['tbl_prefix'].'tags', 'field' => array('id, tags'), 'method' => PDO::FETCH_OBJ);
 			$db->select($qryArray);
 			$getted_tags = $db->result();
 			
+			$all_tag = array();
 			$tag = array();
 			if( count($getted_tags) > 0 ){
 				foreach($getted_tags as $row){
-					$tag[] = '"'.$row->tags.'"';	
+					$all_tag[] = '{id: "'.$row->id.'", text: "'.$row->tags.'"}';
+					$tag[] = '{id: "'.$row->tags.'", text: "'.$row->tags.'"}';
 				}
 			}
 		?>
-		$("#tags").select2({ tags:[<?php echo implode(",", $tag) ?>], tokenSeparators: [",", " "] });
+		
+		var preTags = [<?php echo implode(',', $pre_tag) ?>];
+		var allTags = [<?php echo implode(',', $tag) ?>];
+		var allTagsWithId = [<?php echo implode(',', $all_tag) ?>];
+		
+		$("#tags").select2({ tags:allTags, tokenSeparators: [",", " "] });
+		$("#tags").select2('data', preTags);
+		$("#tags").change(function(e) {
+			if( e.removed ) {
+				var topic_relate = <?php echo $origData->id; ?>;
+				if(typeof(e.removed.id) != 'undefined'){
+					if(confirm("Remove `"+e.removed.text+"` tag?")){
+						$.ajax({
+						  type: "POST",
+						  url: "<?php echo $global->baseurl.$comDir ?>_ajax.del.tag.php",
+						  data: { tag_id: getActualId(e.removed.id, allTagsWithId), kw_id: topic_relate }
+						});		
+					}
+				}
+			}
+		});
+		
+		$('#revert_tags').click(function(){
+			$("#tags").select2('data', preTags);
+			return false;	
+		});
 	});
 </script>
 

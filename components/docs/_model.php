@@ -30,7 +30,7 @@ if( isset($array['kn_wiki']) ){
 	$errorList = array();
 	
 	if($array['project']=='flagged') $errorList[] = 'Please select a project from list';
-	if($array['category']=='flagged') $errorList[] = 'Invalid category name!';
+	if($array['category']=='flagged') $errorList[] = 'Invalid brand name!';
 	if($array['title']=='flagged') $errorList[] = 'Please enter a valid title';		
 	if(trim($array['description'])==NULL) $errorList[] = 'Please write something in description';	
 	// checking for error
@@ -49,7 +49,7 @@ if( isset($array['kn_wiki']) ){
 		$array['category'] = strtolower($array['category']);
 		$array['url'] = genUrl($array['title']);
 		$array['created_at'] = date("Y-m-d");
-		$array['state'] = 0;
+		$array['state'] = $global->approvalValue;
 		$array['by_id'] = $userData->id;
 		$array['type'] = 'wiki';
 		
@@ -92,12 +92,12 @@ if( isset($array['kn_wiki']) ){
 			// adding reputation
 			$db->insert($config['tbl_prefix'].'reputation', array('rep'=>$global->rep_add_new_wiki, 'to_user_id'=>$userData->id, 'from_user_id'=> -1, 'for_kn_id'=>$inserted['insertedId']), array('to_user_id', 'for_kn_id', 'from_user_id'));
 			
-			$_SESSION['msg']['main'] = 'Thank you for submit article into wiki!';
-			$_SESSION['msg']['more'] = 'An administrator must approve this article, Before appears to wiki. It may take up to 1-2 business day(s).';
+			$_SESSION['msg']['main'] = 'Thank you for submit article!';
+			if($global->approvalValue==0) $_SESSION['msg']['more'] = 'An administrator must approve this article, Before appears to wiki. It may take up to 1-2 business day(s).';
 			$_SESSION['msg']['rurl'] = $comURL;
 			include($global->comFolder.'/redirect/success.php');
 			
-			//SendMail( $global->nofication_email, 'Wiki: Action required!', "A new article has been submitted to wiki waiting for moderation.<br /><br /><strong>Title:</strong> ".$array['title']."<br /><br />Please go to your account dashboard and approve/disapprove pending submission(s)." );
+			if(!$global->debugMode) SendMail( $global->nofication_email, 'New doc added!', "A new article has been submitted to docs.<br /><br /><strong>Title:</strong> ".$array['title'] );
 		}
 		
 		// if email already exists
@@ -137,7 +137,7 @@ elseif(isset($_POST['update_kn_wiki'])){
 	$errorList = array();
 	
 	if($array['project']=='flagged') $errorList[] = 'Please select a project from list';
-	if($array['category']=='flagged') $errorList[] = 'Invalid category name!';
+	if($array['category']=='flagged') $errorList[] = 'Invalid brand name!';
 	if($array['title']=='flagged') $errorList[] = 'Please enter a valid title';	
 	if($array['modify_reason']=='flagged') $errorList[] = 'You have forget to commit the changes';	
 	if(trim($array['description'])==NULL) $errorList[] = 'Please write something in description';
@@ -199,7 +199,7 @@ elseif(isset($_POST['update_kn_wiki'])){
 			}
 			// tags
 			
-			$_SESSION['msg']['main'] = 'Wiki has been updated!';
+			$_SESSION['msg']['main'] = 'Docs has been updated!';
 			$_SESSION['msg']['rurl'] = $comURL.'article/'.$comRoute[0].'/';
 			include($global->comFolder.'/redirect/success.php');
 		}

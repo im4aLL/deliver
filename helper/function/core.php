@@ -484,4 +484,17 @@ function get_rep($emp_id){
 
 	return $rep_r[0]->reputation > 0 ? $rep_r[0]->reputation : 0;
 }
+
+function genBrands(){
+	global $global;
+
+	$html = '';
+	if( count($global->brands) > 0 ){
+		foreach($global->brands as $brands){
+			$html .= '<option value="'.strtolower($brands).'">'.$brands.'</option>';
+		}
+	}
+
+	return $html;
+}
 ?>
