@@ -27,7 +27,7 @@ $global->smtp_host        = 'smtp.gmail.com';
 $global->smtp_secure      = 'ssl';
 $global->smtp_port        = 465;
 $global->smtp_username    = 'hogarthwiki@gmail.com';
-$global->smtp_password    = 'graphicPeople#2013';
+$global->smtp_password    = '';
 $global->smtp_from        = 'no-reply@graphicpeoplestudio.com';
 $global->smtp_from_name   = $global->teamName.' team';
 

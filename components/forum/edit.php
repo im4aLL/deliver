@@ -30,6 +30,8 @@ defined("deliver") or die("Restriced Access");
 		/*echo '<pre>';
 		print_r($origData);
 		echo '</pre>';*/
+
+		if($userData->id != $origData->by_id && $userData->usergroup != 'Administrator') die('You don\'t have enough privilege to view this page!');
 	?>
     
     <form action="" method="post" class="form-horizontal" id="update_kn_wiki_frm">

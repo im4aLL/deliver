@@ -226,4 +226,26 @@ elseif(isset($_POST['update_kn_wiki'])){
 		
 }
 // If update wiki
+
+// if want to delete
+if( isset($_POST['delete']) ){
+	$id = intval($_POST['id']);
+
+	$db->delete($config['tbl_prefix'].'comments', array('to_id'=>$id));
+	$db->delete($config['tbl_prefix'].'reputation', array('for_kn_id'=>$id));
+
+	$deleted = $db->delete($_this->tableName, array( 'id' => $id ) );
+
+	if($deleted['affectedRow']>0) {
+		$_SESSION['msg']['main'] = 'Docs has been deleted!';
+		$_SESSION['msg']['rurl'] = $comURL;
+		include($global->comFolder.'/redirect/success.php');
+	}
+	else {
+		$_SESSION['msg']['main'] = 'Sorry, an unknown error occurred';
+		$_SESSION['msg']['more'] = 'Please contact to your team leader to investigate and send a bug report <a href="mailto:'.$global->bug_report.'">here</a>.';
+		$_SESSION['msg']['rurl'] = $comURL.'article/'.cln_url_string($_POST['slug']).'/';
+		include($global->comFolder.'/redirect/success.php');
+	}
+}
 ?>

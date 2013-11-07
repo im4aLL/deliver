@@ -87,9 +87,20 @@ defined("deliver") or die("Restriced Access");
 					
 					echo '<div class="span10">';
 						
+						// delete link
+	                    if($userData->usergroup == 'Administrator'){
+	                          echo '<form action="" method="post" class="deleteThis pull-right">
+	                                    <input type="hidden" name="slug" value="'.$comRoute[0].'">
+	                                    <input type="hidden" name="id" value="'.$single->id.'">
+	                                    <input type="hidden" name="delete" />
+	                                    <a href="javascript:void(0)" class="pull-right tips" data-toggle="tooltip" data-placement="left" title="delete this permanently"><small><i class="icon-trash"></i> delete</small></a>
+	                                </form>';  
+	                    }
+	                    // delete link
+
 						// edit link
-						if($userData->id == $single->author_id){
-							echo '<a class="pull-right tips" href="'.$comURL.'edit/'.$comRoute[0].'/" data-toggle="tooltip" data-placement="bottom" title="update this knowledge base"><small><i class="icon-pencil"></i> edit</small></a>';	
+						if($userData->id == $single->author_id || $userData->usergroup == 'Administrator'){
+							echo '<a style="margin-right: 10px" class="pull-right tips" href="'.$comURL.'edit/'.$comRoute[0].'/" data-toggle="tooltip" data-placement="bottom" title="update this knowledge base"><small><i class="icon-pencil"></i> edit</small></a>';	
 						}
 						// edit link
 						
@@ -272,6 +283,10 @@ defined("deliver") or die("Restriced Access");
 			return false;	
 		});
 		
+
+		$('.deleteThis').find('a').click(function(event) {
+            if(confirm('Are you sure you want to permanently delete this?')) $(this).parent().submit();
+        });
 		
 	});
 </script>

@@ -26,12 +26,25 @@ defined("deliver") or die("Restriced Access");
             $single = $singleArray[0];
                 
                 echo '<div class="article_body">';
-				 
+				    
+                    // delete link
+                    if($userData->usergroup == 'Administrator'){
+                          echo '<form action="" method="post" class="deleteThis">
+                                    <input type="hidden" name="slug" value="'.$comRoute[0].'">
+                                    <input type="hidden" name="id" value="'.$single->id.'">
+                                    <input type="hidden" name="delete" />
+                                    <a href="javascript:void(0)" class="pull-right tips" data-toggle="tooltip" data-placement="left" title="delete this permanently"><small><i class="icon-trash"></i> delete</small></a>
+                                </form>';  
+                    }
+                    // delete link
+
                     // edit link
                     if($userData->id == $single->author_id || $userData->usergroup == 'Administrator'){
-                        echo '<a class="pull-right tips" href="'.$comURL.'edit/'.$comRoute[0].'/" data-toggle="tooltip" data-placement="left" title="update this wiki"><small><i class="icon-pencil"></i> edit</small></a>';	
+                        echo '<a style="margin-right: 10px" class="pull-right tips" href="'.$comURL.'edit/'.$comRoute[0].'/" data-toggle="tooltip" data-placement="left" title="update this doc"><small><i class="icon-pencil"></i> edit</small></a>';	
                     }
                     // edit link
+
+                    
                     
                     echo '<div class="art-description">';
                         echo '<h1 class="art-title">'.$single->title.'</h1>';
@@ -263,6 +276,11 @@ defined("deliver") or die("Restriced Access");
 			
 			return false;	
 		});
+
+        
+        $('.deleteThis').find('a').click(function(event) {
+            if(confirm('Are you sure you want to permanently delete this?')) $(this).parent().submit();
+        });
 		
 	});
 </script>
