@@ -61,7 +61,7 @@ defined("deliver") or die("Restriced Access");
                                 
                                 <span class="pull-right moderation_menu">
                                 	<?php if( ($userData->id == $row->commenter_id) || $userData->usergroup=='Administrator' ) { ?><a href="javascript:void(0)" class="comment_edit"><i class="icon-edit"></i> Edit</a><?php } ?>
-                                    <?php if($userData->usergroup=='Administrator') { ?><a href="javascript:void(0)" class="comment_delete"><i class="icon-remove"></i> Delete</a><?php } ?>
+                                    <?php if($userData->usergroup=='Administrator') { ?><a href="javascript:void(0)" class="comment_delete" data-id="<?php echo $row->id ?>"><i class="icon-remove"></i> Delete</a><?php } ?>
                                 </span>
                             </div>
 
@@ -248,8 +248,13 @@ defined("deliver") or die("Restriced Access");
 					var userImage = '<?php echo '<img src="'.$global->baseurl.'images/users/r_thumb_'.$userData->avatar.'" alt="'.$userData->name.'" class="img-circle">'; ?>';
 					var userName = '<?php echo '<a href="'.getProfileUrl($userData->email).'" target="_blank" class="muted"><strong>'.$userData->name.'</strong></a>'; ?>';
 					var timeText = 'just now';
-					var moderationTool = '<a href="javascript:void(0)" class="comment_edit"><i class="icon-edit"></i> Edit</a><?php if($userData->usergroup=='Administrator') { ?><a href="javascript:void(0)" class="comment_delete"><i class="icon-remove"></i> Delete</a><?php } ?>';
 					var commentId = json.insertedId;
+
+					var moderationTool = '<a href="javascript:void(0)" class="comment_edit"><i class="icon-edit"></i> Edit</a>';
+					<?php if($userData->usergroup=='Administrator') { ?>
+						moderationTool += '<a href="javascript:void(0)" class="comment_delete" data-id="'+commentId+'"><i class="icon-remove"></i> Delete</a>';
+					<?php } ?>
+					
 					
 					var commnentSkeleton = '<div class="row" id="comment-'+commentId+'">'+
 			
@@ -307,5 +312,31 @@ defined("deliver") or die("Restriced Access");
 			return false;	
 		});
 		// Adding comment
+
+		$('.user_comments').on('click', '.moderation_menu .comment_delete', function(event) {
+
+			if(!confirm('Are you sure you want to delete this comment?')) return false;
+
+			var deleteId = $(this).data('id'),
+				_this = $(this);
+
+			_this.html('<i class="icon-remove"></i> Deleting...');
+
+			var request = $.ajax({
+				url: "<?php echo $global->baseurl.$comDir ?>_ajax.del.comment.php",
+				type: "POST",
+				data: 'id='+deleteId
+			});
+
+			request.done(function(response){
+				if(response=='true') $('#comment-'+deleteId).slideUp();
+				else _this.html('<i class="icon-remove"></i> Error during delete!');
+			});
+
+			request.fail(function(){
+				_this.html('<i class="icon-remove"></i> No internet connection!');
+			});
+			
+		});
 	});
 </script>

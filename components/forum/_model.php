@@ -229,7 +229,7 @@ elseif(isset($_POST['update_kn_wiki'])){
 // If update wiki
 
 // if want to delete
-if( isset($_POST['delete']) ){
+if( isset($_POST['delete']) && $userData->usergroup == 'Administrator'){
 	$id = intval($_POST['id']);
 
 	$db->delete($config['tbl_prefix'].'comments', array('to_id'=>$id));
