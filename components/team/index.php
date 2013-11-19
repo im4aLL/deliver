@@ -17,7 +17,32 @@ defined("deliver") or die("Restriced Access");
 
 <div class="container <?php echo $route['component']; ?>">
 	<div class="row">
-	 	<div class="span-12">Hey! <?php echo $userData->name ?>, <br><br>Team page is in under construction. Please come back later on this page! <br><br>Thank you <br>Hogarth team Dhaka</div>
+	 		
+ 		<?php
+ 			$db->query("SELECT * FROM ".$config['tbl_prefix']."users WHERE state = 1 ORDER by name ASC");
+ 			if( $db->total() > 0 ){
+ 				foreach($db->result() as $user){
+ 					echo '<div class="span2">'; 
+	 					echo '<div class="user">'; 
+
+	 						$pp_url = explode("@", $user->email);
+
+	 						echo '<a href="'.$global->baseurl.'profile/'.strtolower($pp_url[0]).'/">';
+		 						
+		 						echo '<img src="'.$global->baseurl.'images/users/'.(($user->avatar=='default.jpg' || $user->avatar == null)?'default.jpg':'r_'.$user->avatar).'" alt="'.$user->name.'" />';
+
+		 						echo '<div class="profile">'; 
+		 							echo '<span class="name">'.$user->name.'</span>';
+		 							echo '<span class="designation">'.beautifyWord($user->designation).'</span>';
+		 						echo '</div>';
+
+	 						echo '</a>';
+
+	 					echo '</div>';
+ 					echo '</div>';
+ 				}
+ 			}
+ 		?>
 	 </div> 
 </div>
 

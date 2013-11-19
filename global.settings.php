@@ -27,7 +27,7 @@ $global->smtp_host        = 'smtp.gmail.com';
 $global->smtp_secure      = 'ssl';
 $global->smtp_port        = 465;
 $global->smtp_username    = 'hogarthwiki@gmail.com';
-$global->smtp_password    = '';
+$global->smtp_password    = 'graphicPeople#2013';
 $global->smtp_from        = 'no-reply@graphicpeoplestudio.com';
 $global->smtp_from_name   = $global->teamName.' team';
 
@@ -37,7 +37,7 @@ $global->contact_email    = 'Al.Hadi@adpeople.com';
 $global->bug_report       = 'Al.Hadi@adpeople.com';
 $global->version          = '1.0.1';
 $global->copyright        = '&copy; '.date("Y").' to GraphicPeople ('.$global->teamName.' team)';
-$global->last_updated     = '06/11/2013 at 9:50 PM by '.$global->bug_report;
+$global->last_updated     = '08/11/2013 at 2:35 PM by '.$global->bug_report;
 
 $global->rep_wiki         = 30;
 $global->rep_kn           = 20;

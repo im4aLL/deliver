@@ -84,7 +84,7 @@ defined("deliver") or die("Restriced Access");
     <hr>
 
 	<?php
-		if($keyword!=NULL && $searchString==NULL) echo '<div class="alert"><strong>Search result:</strong> Sorry! no wiki found with desired keyword(s).</div>';
+		if($keyword!=NULL && $searchString==NULL) echo '<div class="alert"><strong>Search result:</strong> Sorry! no topic found with desired keyword(s).</div>';
 		else 
 			{
 
@@ -136,7 +136,7 @@ defined("deliver") or die("Restriced Access");
 					
 				}
 				elseif($keyword!=NULL) echo '<div class="alert"><strong>Search result:</strong> Sorry! no result with desired keyword(s).</div>';
-				else echo '<div class="alert"><strong>Sorry!</strong> no wiki found.</div>';	
+				else echo '<div class="alert"><strong>Sorry!</strong> No topic started yet! Be the first.</div>';	
 			}
 	?>
 </div>

@@ -18,14 +18,14 @@ defined("deliver") or die("Restriced Access");
 <?php
 	//$qryArray = array( 'tbl_name' => $_this->tableName, 'method' => PDO::FETCH_OBJ, 'condition' => " WHERE email LIKE '".$route['view']."@%'" );
 	//$db->select($qryArray);
-	
+
 	$db->query("SELECT * FROM ".$_this->tableName." WHERE email LIKE '".$route['view']."@%'");
 	$db->result();
 	
 	$profileResult = $db->result();
 	$profileInfo = $profileResult[0];
 	
-	$s_p_username = explode("@", $userData->email);
+	$s_p_username = explode("@", $profileInfo->email);
 	$profileInfo->username = strtolower($s_p_username[0]);
 ?>
 

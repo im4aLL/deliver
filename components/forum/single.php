@@ -100,7 +100,7 @@ defined("deliver") or die("Restriced Access");
 
 						// edit link
 						if($userData->id == $single->author_id || $userData->usergroup == 'Administrator'){
-							echo '<a style="margin-right: 10px" class="pull-right tips" href="'.$comURL.'edit/'.$comRoute[0].'/" data-toggle="tooltip" data-placement="bottom" title="update this knowledge base"><small><i class="icon-pencil"></i> edit</small></a>';	
+							echo '<a style="margin-right: 10px" class="pull-right tips" href="'.$comURL.'edit/'.$comRoute[0].'/" data-toggle="tooltip" data-placement="bottom" title="update this post"><small><i class="icon-pencil"></i> edit</small></a>';	
 						}
 						// edit link
 						
@@ -136,14 +136,14 @@ defined("deliver") or die("Restriced Access");
 						$jsonString = encode(json_encode(array('rep'=>$global->rep_kn, 'to_user_id'=>$single->author_id, 'for_kn_id'=>$single->id, 'from_user_id'=> $userData->id)));
 						
 						echo '<div class="pull-left '.(($is_helpful_current_user)?'hide':'').' make_helpful_block">
-						<strong class="mark_as_helpful">Did you find this helpful?</strong> 
+						<strong class="mark_as_helpful">Did you like this topic?</strong> 
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<a href="javascript:void(0)" class="helpful" rel="'.$jsonString.'"><i class="icon-ok"></i> Yes</a>
 						<span class="loading muted hide"><i class="icon-refresh icon-spin"></i> <span>Submitting ...</span></span>
 						&nbsp;&nbsp; <span class="error-occured hide">An error occurred. Please try again/later.</span>
 						</div>';
 							
-						echo '<div class="pull-left '.(($is_helpful_current_user)?'':'hide').' is_helpful_block"><span class="is_helpful">This found helpful by you.</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="helpful is_not_helpful" rel="'.$jsonString.'@@no"><i class="icon-remove"></i> No, this is not!</a>
+						echo '<div class="pull-left '.(($is_helpful_current_user)?'':'hide').' is_helpful_block"><span class="is_helpful">You liked this.</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="helpful is_not_helpful" rel="'.$jsonString.'@@no"><i class="icon-remove"></i> No, this is not!</a>
 						<span class="loading muted hide"><i class="icon-refresh icon-spin"></i> <span>Submitting ...</span></span>
 						&nbsp;&nbsp; <span class="error-occured hide">An error occurred. Please try again/later.</span>
 						</div>';
@@ -155,7 +155,7 @@ defined("deliver") or die("Restriced Access");
 							}
 						}
 						
-						echo '<a href="#userlist" data-toggle="modal" class="pull-right make_helpful_block">'.$db->total().' people found this helpful</a>';
+						echo '<a href="#userlist" data-toggle="modal" class="pull-right make_helpful_block">'.$db->total().' people liked this topic</a>';
 						
 						echo '</div>';
 						
@@ -178,7 +178,7 @@ defined("deliver") or die("Restriced Access");
 <div id="userlist" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Following user found this helpful</h3>
+        <h3 id="myModalLabel">Following user liked this topic</h3>
     </div>
     <div class="modal-body">
     	<?php if(count($datas)>0) echo implode(", ", $datas); else echo 'No user found!'; ?>

@@ -48,7 +48,7 @@ function decode($sValue, $sSecretKey = 'hadi') {
 }
 
 function cln_url_string($string){
-	return preg_replace("/[^a-zA-Z0-9-_]+/", "", $string);	
+	return preg_replace("/[^a-zA-Z0-9-._]+/", "", $string);	
 }
 
 function sant_str($str){
@@ -496,5 +496,9 @@ function genBrands(){
 	}
 
 	return $html;
+}
+
+function beautifyWord($string){
+	return preg_replace('/-/', ' ', $string);
 }
 ?>

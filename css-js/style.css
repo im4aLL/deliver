@@ -426,6 +426,17 @@ a.helpful { font-weight:bold; }
 	opacity: 1;
 }
 
+.user { background: #000; color: #949494; height: 315px; margin-bottom: 30px; overflow: hidden; }
+.user a { color: #949494; text-decoration: none; display: block; width: 100%; height: 100% }
+.user a:hover { text-decoration: none; color: #5DADE2 }
+.user a .name { display: block; font-family: 'Bebas'; font-size: 22px; padding: 15px 15px 5px; color: #ddd; line-height: 22px; 
+  -webkit-transition: all 250ms ease-in-out;
+  -moz-transition: all 250ms ease-in-out;
+  -o-transition: all 250ms ease-in-out;
+  transition: all 250ms ease-in-out; }
+.user a:hover .name { color: #fff }
+.user a .designation { padding: 0 15px; text-transform: capitalize; font-size: 12px }
+.user img, .user .profile { float: left }
 
 /* #Media Queries
 ================================================== */

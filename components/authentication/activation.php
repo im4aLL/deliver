@@ -20,13 +20,15 @@ if( $comRoute[0] != NULL && isValidMd5($comRoute[0]) ) {
 	$result = $db->result();
 	
 	if( $db->total() == 1 ){
-		$updated = $db->update($_this->tableName, array('state'=> 2, 'temp_code'=> ''), array('temp_code'=> $comRoute[0]));
+		$approvalState = $global->approvalValue == 1 ? 1 : 2; 
+		$updated = $db->update($_this->tableName, array('state'=> $approvalState, 'temp_code'=> ''), array('temp_code'=> $comRoute[0]));
 			
 			// if data updated
 			if( $updated['affectedRow'] == 1 ){
 	
 				$_SESSION['msg']['main'] = 'Thank you for validating your account!';
-				$_SESSION['msg']['more'] = 'Please wait for approval and it may take up to 1-2 business day(s)';
+				if($approvalState==2) $_SESSION['msg']['more'] = 'Please wait for approval and it may take up to 1-2 business day(s)';
+				else if($approvalState==1) $_SESSION['msg']['more'] = 'You may login now!';
 				$_SESSION['msg']['rurl'] = $comURL.'signin/';
 				include($global->comFolder.'/redirect/success.php');
 				
